@@ -1,0 +1,19 @@
+.fullWidthTable {
+    width: 100%;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.fullWidthTable>thead>tr>th {
+    text-align: left;
+}
+
+.boxedInput {
+    padding: .5rem;
+    flex-grow: 1;
+    background: transparent;
+    background-color: #f7f7f7;
+    border-radius: 5px;
+    border: 1px solid #e2e2e2;
+    outline: none;
+}

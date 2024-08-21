@@ -1,0 +1,35 @@
+.layout {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.asideContainer {
+    width: 250px;
+    padding-top: .5rem;
+    padding-inline: 1rem;
+    background-color: #e2e2e2;
+}
+
+.asideContainer>.dismissButton {
+    margin-left: auto;
+}
+
+.navItems {
+    padding: 0;
+    list-style: none;
+}
+
+.navItems>li>a {
+    width: 100%;
+    display: block;
+    text-decoration: none;
+    border-radius: 2px;
+    padding: .275rem;
+}
+
+
+.navItems>li>a:hover,
+.navItems>li>a.active {
+    background-color: #d2d2d2;
+}
