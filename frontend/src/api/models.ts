@@ -61,3 +61,18 @@ export type IngestDataResponse = {
     url: string;
     keywords: string;
 }
+
+export type ConfigDataConversation = {
+    conversation: string;
+}
+
+export type ConfigDataResponse = {
+    instruction: string;
+    rows: ConfigDataConversation[]
+}
+
+export type ExploreFileDetailsResponse = {
+    chunkId: string;
+    content: string;
+    url: string;
+}

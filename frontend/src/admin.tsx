@@ -12,6 +12,7 @@ import AdminLayout from "./pages/admin-layout/AdminLayout";
 import AdvisorProfile from "./pages/AdvisorProfile/AdvisorProfile";
 import IngestData from "./pages/ingest-data/IngestData";
 import Configuration from "./pages/config/Configuration";
+import ExploreData from "./pages/explore-data/ExploreData";
 
 initializeIcons();
 
@@ -22,7 +23,7 @@ export default function AdminApp() {
                 <Route path="/" element={<AdminLayout />}>
                     <Route path="/" element={<IngestData />} />
 
-                    <Route path="/explore" element={<h1>Explore</h1>} />
+                    <Route path="/explore" element={<ExploreData/>} />
                     <Route path="/config" element={<Configuration />} />
                     <Route path="*" element={<NoPage />} />
                 </Route>

@@ -1,4 +1,4 @@
-import { ConversationRequest, AdminConfigResponse, IngestDataResponse } from "./models";
+import { ConversationRequest, AdminConfigResponse, IngestDataResponse, ExploreFileDetailsResponse, ConfigDataResponse } from "./models";
 
 export async function conversationApi(options: ConversationRequest, abortSignal: AbortSignal): Promise<Response> {
     const response = await fetch("/api/conversation/azure_byod", {
@@ -78,6 +78,52 @@ export async function saveIngestDataApi(data: IngestDataResponse[]): Promise<Res
         },
         body: JSON.stringify({
             ingestData: data
+        }),
+    });
+    return response;
+}
+
+export async function getExploreDataFileApi(): Promise<[]> {
+    const response = await fetch("/api/expore_data_file", {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json"
+        }
+    });
+
+    return response.json();
+}
+
+export async function getExploreDataFileDetailsApi(): Promise<ExploreFileDetailsResponse[]> {
+    const response = await fetch("/api/expore_data_file_detail", {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json"
+        }
+    });
+
+    return response.json();
+}
+
+export async function getConfigurationApi(): Promise<[]> {
+    const response = await fetch("/api/get_config", {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json"
+        }
+    });
+
+    return response.json();
+}
+
+export async function saveConfigurationDataApi(data: ConfigDataResponse): Promise<Response> {
+    const response = await fetch("/api/conig_data", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            ConfigData: data
         }),
     });
     return response;
