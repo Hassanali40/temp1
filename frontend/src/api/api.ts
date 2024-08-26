@@ -106,25 +106,43 @@ export async function getExploreDataFileDetailsApi(): Promise<ExploreFileDetails
 }
 
 export async function getConfigurationApi(): Promise<[]> {
-    const response = await fetch("/api/get_config", {
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json"
-        }
-    });
+    try {
+        const response = await fetch("/api/get_config", {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        });
 
-    return response.json();
+        if (!response.ok) {
+            throw new Error(JSON.stringify({
+                message: response.statusText,
+            }));
+        }
+        return response.json();
+    } catch (error) {
+        throw error;
+    }
 }
 
 export async function saveConfigurationDataApi(data: ConfigDataResponse): Promise<Response> {
-    const response = await fetch("/api/conig_data", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            ConfigData: data
-        }),
-    });
-    return response;
+    try {
+        const response = await fetch("/api/conig_data", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                ConfigData: data
+            }),
+        });
+        if (!response.ok) {
+            throw new Error(JSON.stringify({
+                message: response.statusText,
+            }));
+        }
+        return response.json();
+    } catch (error) {
+        throw error;
+    }
 }

@@ -1,7 +1,8 @@
 import { ComboBox, Dropdown, Stack } from "@fluentui/react";
 import './FileData.module.css'
 import { getExploreDataFileApi, getExploreDataFileDetailsApi, searchFiles } from '../../explore-data/MockData'
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import Toast from "../../../components/ToastComponent/Toast";
 // import { mockFileData, mockFileDetailData } from '../../../api'
 
 interface Props {
@@ -14,25 +15,43 @@ const FileData = () => {
     const [allFiles, SetAllFiles] = useState<any>([])
     const [fileDetail, setFileDetail] = useState<any>([])
     const [index, setIndex] = useState(0)
+    const [status, setStatus] = useState<string>('')
+    const [statusType, setStatusType] = useState<Number>()
+    const toastRef = useRef<any>(null);
+
+    const handleShowToast = () => {
+        if (toastRef.current) {
+            toastRef.current.showToast();
+        }
+    };
 
     useEffect(() => {
         const loadData = async () => {
             try {
                 const response: any = await getExploreDataFileApi();
-                const data = await response.json();
-                SetAllFiles(data);
+                SetAllFiles(response);
                 await getFilesDetails()
-            } catch (error) {
-                console.error(error);
+            } catch (error: any) {
+                const parsedError = JSON.parse(error.message);
+                setStatus(parsedError.message)
+                setStatusType(1)
+                handleShowToast()
             }
         };
         loadData();
     }, []);
 
     const getFilesDetails = async () => {
-        const getDetails = await getExploreDataFileDetailsApi();
-        const data = await getDetails.json();
-        setFileDetail(data)
+        try {
+            const getDetails = await getExploreDataFileDetailsApi();
+            setFileDetail(getDetails)
+        }
+        catch (error: any) {
+            const parsedError = JSON.parse(error.message);
+            setStatus(parsedError.message)
+            setStatusType(1)
+            handleShowToast()
+        }
     }
 
     const onFileSelect = async ({ key }: any) => {
@@ -44,6 +63,7 @@ const FileData = () => {
         const filterFile = await searchFiles(value)
         SetAllFiles(filterFile);
     }
+
     return (
         <Stack>
             <TableData onFileSelect={onFileSelect} allFiles={allFiles} onInputValueChange={onInputValueChange} />
@@ -75,6 +95,9 @@ const FileData = () => {
                     </tbody>
                 </table>
             </Stack>
+            <Stack>
+                <Toast status={status} type={statusType} ref={toastRef} />
+            </Stack>
         </Stack>
     )
 }
@@ -100,8 +123,8 @@ const TableData = ({ onFileSelect, allFiles, onInputValueChange }: Props) => {
                     placeholder="Select or search a file"
                     options={fileOptions}
                     onChange={(event, option) => onFileSelect(option)}
-                    allowFreeform={true} 
-                    autoComplete="on"     
+                    allowFreeform={true}
+                    autoComplete="on"
                     onInputValueChange={onInputValueChange}
                 />
             </Stack>

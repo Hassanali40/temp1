@@ -60,9 +60,11 @@ export const getExploreDataFileApi = async () => {
     try {
         const response = await fetch(jsonUrlFile);
         if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+            throw new Error(JSON.stringify({
+                message: response.statusText,
+            }));
         }
-        return response;
+        return response.json();
     } catch (error) {
         throw error;
     }
@@ -72,9 +74,11 @@ export const getExploreDataFileDetailsApi = async () => {
     try {
         const response = await fetch(jsonUrlFileDetail);
         if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+            throw new Error(JSON.stringify({
+                message: response.statusText,
+            }));
         }
-        return response;
+        return response.json();
     } catch (error) {
         throw error;
     }
@@ -88,7 +92,7 @@ export const searchFiles = async (value: string) => {
             file.name.toLowerCase().includes(value.toLowerCase())
         );
         if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+            throw new Error(`message: ${response.statusText}`);
         }
         return filteredOptions
     } catch (error) {

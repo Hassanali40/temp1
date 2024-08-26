@@ -2,11 +2,16 @@ import { DefaultButton, Stack, VerticalDivider } from "@fluentui/react"
 import { Dismiss12Regular } from "@fluentui/react-icons";
 import styles from "./Configuration.module.css";
 import { useFieldArray, useForm } from "react-hook-form";
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import { getConfigurationApi, saveConfigurationDataApi } from '../../api';
+import Toast from "../../components/ToastComponent/Toast";
 
 
 const Configuration = () => {
+    const [status, setStatus] = useState<string>('')
+    const [statusType, setStatusType] = useState<Number>()
+    const toastRef = useRef<any>(null);
+
     const { control, register, handleSubmit } = useForm({
         defaultValues: {
             instruction: 'ER Staffing Anayst is designed to analyse',
@@ -28,8 +33,22 @@ const Configuration = () => {
     }, [replace]);
 
     const onSubmit = async (data: any) => {
-        await saveConfigurationDataApi(data);
+        try {
+            await saveConfigurationDataApi(data);
+        }
+        catch (error: any) {
+            const parsedError = JSON.parse(error.message);
+            setStatus(parsedError.message)
+            setStatusType(1)
+            handleShowToast()
+        }
     }
+
+    const handleShowToast = () => {
+        if (toastRef.current) {
+            toastRef.current.showToast();
+        }
+    };
 
     return (
         <Stack grow={1} horizontalAlign="center" verticalAlign="center">
@@ -64,13 +83,17 @@ const Configuration = () => {
                         </div>
                         <div style={{ marginTop: "1rem" }}>
                             <Stack horizontal gap={16}>
-                                <DefaultButton text="Add Row" onClick={() => append({ converstation: '' })}/>
+                                <DefaultButton text="Add Row" onClick={() => append({ converstation: '' })} />
                                 <DefaultButton primary text="Submit" type="submit" />
                             </Stack>
                         </div>
                     </Stack>
                 </form>
+                <Stack>
+                    <Toast status={status} type={statusType} ref={toastRef} />
+                </Stack>
             </Stack>
+
         </Stack>
     )
 }
