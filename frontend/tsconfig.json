@@ -25,7 +25,7 @@
   },
   "include": [
     "src"
-  ],
+, "main-src/main.tsx"  ],
   "references": [
     {
       "path": "./tsconfig.node.json"

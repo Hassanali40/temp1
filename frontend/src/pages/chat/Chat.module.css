@@ -10,61 +10,101 @@
     display: flex;
     margin-top: 0px;
     margin-bottom: 20px;
-    margin-left: 20px;
+    padding-left: 15px;
     margin-right: 20px;
     gap: 20px;
 }
 
-.chatContainer {
-    flex: 1;
+.chatContainerMain {
     display: flex;
-    flex-direction: column;
+    width: 100%;
+    justify-content: space-between;
     align-items: center;
-    background: radial-gradient(108.78% 108.78% at 50.02% 19.78%, #FFFFFF 57.29%, #EEF6FE 100%);
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.14), 0px 0px 2px rgba(0, 0, 0, 0.12);
-    border-radius: 8px;
-    overflow-y: auto;
     max-height: calc(100vh - 100px);
 }
 
-.chatEmptyState {
-    flex-grow: 1;
+.chatContainer {
+    flex: 1;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(108.78% 108.78% at 50.02% 19.78%, #FFFFFF 57.29%, #EEF6FE 100%);
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.14), 0px 0px 2px rgba(0, 0, 0, 0.12);
+    border-radius: 8px;
+    overflow: auto;
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
+    align-content: center;
+    justify-content: center;
+
+}
+
+.chatEmptyStateContainer {
+    flex-grow: 1;
+    margin-left: 20px;
+    margin-top: 20px;
+}
+
+.chatEmptyState {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 20px;
 }
 
 .chatEmptyStateTitle {
-    font-family: "Segoe UI";
-    font-style: normal;
-    font-weight: 700;
+    margin: 0;
+    padding: 0;
+    background: var(--Gradient-Linear-Color-12, linear-gradient(45deg, #7B6AE0 0%, #FFBB89 100%));
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+    font-family: Inter;
     font-size: 36px;
-    display: flex;
-    align-items: flex-end;
-    text-align: center;
-    line-height: 24px;
-    margin-top: 36px;
-    margin-bottom: 0px;
+    font-style: normal;
+    font-weight: 600;
+    letter-spacing: -0.72px;
 }
 
 .chatEmptyStateSubtitle {
-    margin-top: 20px;
-    font-family: "Segoe UI";
+    margin: 0;
+    padding: 0;
+    color: #E04F16;
+    font-family: Inter;
+    font-size: 36px;
     font-style: normal;
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 150%;
+    font-weight: 600;
+    letter-spacing: -0.72px;
+}
+
+.chatEmptyStateCenter {
     display: flex;
-    align-items: flex-end;
-    text-align: center;
-    letter-spacing: -0.01em;
-    color: #616161;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.chatEmptyStateCenterCards {
+    display: flex;
+    flex-direction: row;
+    gap: 25px;
+    flex-wrap: wrap;
+}
+
+.chatEmptyStateCenterTitle {
+    margin-top: 50px;
+    color: #667085;
+    font-family: Inter;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 20px;
+    /* 142.857% */
 }
 
 .chatIcon {
-    height: 62px;
-    width: 62px;
+    height: 76px;
+    width: 76px;
 }
 
 .chatMessageStream {
@@ -142,21 +182,21 @@
 }
 
 .fileAttachmentChat {
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 8px;
-  /* position: absolute; */
-  width: 40px;
-  height: 40px;
-  left: 12px;
-  top: 66px;
-  color: #FFFFFF;
-  border: 1px solid #D1D1D1;
-  border-radius: 20px;
-  z-index: 1;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 8px;
+    /* position: absolute; */
+    width: 40px;
+    height: 40px;
+    left: 12px;
+    top: 66px;
+    color: #FFFFFF;
+    border: 1px solid #D1D1D1;
+    border-radius: 20px;
+    z-index: 1;
 }
 
 .stopGeneratingContainer {
@@ -267,63 +307,63 @@
     flex-grow: 0;
 }
 
-.MobileChatContainer{
-    @media screen and (max-width: 600px)  {
+.MobileChatContainer {
+    @media screen and (max-width: 600px) {
         max-width: 100%;
         margin: 0 auto;
         padding: 8px;
 
-      }
+    }
 }
 
 .mobileStyles {
-    @media screen and (max-width: 600px)  {
+    @media screen and (max-width: 600px) {
         max-width: 100%;
         flex-grow: 1;
         max-height: 100vh;
     }
-  }
+}
 
-  .mobileclearChatBroom{
-      @media screen and (max-width: 600px)  {
+.mobileclearChatBroom {
+    @media screen and (max-width: 600px) {
         left: -30px;
 
-      }
+    }
+}
+
+.mobilefileAttachmentChat {
+    @media screen and (max-width: 600px) {
+        left: -30px;
+
+    }
+}
+
+.mobileCitationPanelTitle {
+    @media screen and (max-width: 600px) {
+        font-weight: 400;
+        font-size: 12px;
+        margin-top: 8px;
+        margin-bottom: 8px;
+
+    }
+}
+
+.mobileCitationPanelContent {
+    @media screen and (max-width: 600px) {
+        font-weight: 250;
+        font-size: 11px;
+
+    }
+}
+
+@media screen and (max-width: 600px) {
+    h1 {
+        font-weight: 300;
+        font-size: 14px;
     }
 
-  .mobilefileAttachmentChat{
-    @media screen and (max-width: 600px)  {
-      left: -30px;
-
+    h2 {
+        font-weight: 300;
+        font-size: 12px;
     }
-  }
-
-    .mobileCitationPanelTitle{
-        @media screen and (max-width: 600px)  {
-            font-weight: 400;
-            font-size: 12px;
-            margin-top: 8px;
-            margin-bottom: 8px;
-
-          }
-    }
-
-    .mobileCitationPanelContent{
-        @media screen and (max-width: 600px){
-            font-weight: 250;
-            font-size: 11px;
-
-        }
-    }
-
-    @media screen and (max-width: 600px){
-        h1{
-            font-weight: 300;
-            font-size: 14px;
-        }
-
-        h2{
-            font-weight: 300;
-            font-size: 12px;
-        }
-     }
+}

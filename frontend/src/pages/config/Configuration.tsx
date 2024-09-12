@@ -26,8 +26,15 @@ const Configuration = () => {
 
     useEffect(() => {
         const loadData = async () => {
-            const initialData = await getConfigurationApi();
-            replace(initialData.length ? initialData : [{ converstation: '' }]);
+            try {
+                const initialData = await getConfigurationApi();
+                replace(initialData.length ? initialData : [{ converstation: '' }]);
+            }
+            catch (error: any) {
+                const parsedError = JSON.parse(error.message);
+                setStatus(parsedError.message)
+                setStatusType(1)
+            }
         };
         loadData();
     }, [replace]);

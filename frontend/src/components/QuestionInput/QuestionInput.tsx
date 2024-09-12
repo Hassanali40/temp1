@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useImperativeHandle, forwardRef} from "react";
+import React, { useState, useEffect, useRef, useImperativeHandle, forwardRef } from "react";
 import { Stack, TextField } from "@fluentui/react";
 import { SendRegular } from "@fluentui/react-icons";
 import Send from "../../assets/Send.svg";
@@ -95,7 +95,7 @@ export const QuestionInput = forwardRef<{ triggerClick: () => void, clearFileInp
     clearFileInput: () => {
       setFile(undefined)
       if (fileInputRef.current) {
-        fileInputRef.current.value=""
+        fileInputRef.current.value = ""
       }
     }
   }));
@@ -106,7 +106,7 @@ export const QuestionInput = forwardRef<{ triggerClick: () => void, clearFileInp
     <Stack>
       <Stack horizontal className={styles.questionInputContainer}>
         {/* File Input Field */}
-        <input type="file" hidden onChange={handleFileChange} ref={fileInputRef}/>
+        <input type="file" hidden onChange={handleFileChange} ref={fileInputRef} />
         {/* Text Input Field */}
         <TextField
           className={styles.questionInputTextArea}

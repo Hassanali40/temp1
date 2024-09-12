@@ -16,7 +16,14 @@ import rehypeRaw from "rehype-raw";
 import { v4 as uuidv4 } from "uuid";
 
 import styles from "./Chat.module.css";
-import Azure from "../../assets/Azure.svg";
+
+
+import SuperCubeLogo from "../../assets/SuperCubeLogo.svg";
+import StopWatch from "../../assets/StopWatch.svg";
+import PodCast from "../../assets/PodCast.svg";
+import BarChart from "../../assets/BarChart.svg";
+import Upload from "../../assets/Upload.svg";
+
 import { multiLingualSpeechRecognizer } from "../../util/SpeechToText";
 
 import {
@@ -29,6 +36,9 @@ import {
 } from "../../api";
 import { Answer } from "../../components/Answer";
 import { QuestionInput } from "../../components/QuestionInput";
+import { MainCard } from "../../components/MainCard";
+import SideMenu from "../../components/SideMenu/SideMenu";
+import SmallSideBar from "../../components/SideMenuSmall/SideMenuSmall";
 
 const Chat = () => {
   const lastQuestionRef = useRef<string>("");
@@ -56,7 +66,13 @@ const Chat = () => {
   const [isRecognizing, setIsRecognizing] = useState(false);
   const [isListening, setIsListening] = useState(false);
   const recognizerRef = useRef<SpeechRecognizer | null>(null);
-  const questionFileInputRef = useRef<{ triggerClick: () => void, clearFileInput: () => void} | null>(null);
+  const questionFileInputRef = useRef<{ triggerClick: () => void, clearFileInput: () => void } | null>(null);
+
+  const [isMenuOpen, setIsMenuOpen] = useState(true);
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
 
 
   const makeApiRequest = async (question: string, file?: File) => {
@@ -71,7 +87,7 @@ const Chat = () => {
       role: "user",
       content: recognizedText || question,
     };
-    if(file){
+    if (file) {
       console.log(file)
     }
     const request: ConversationRequest = {
@@ -236,143 +252,186 @@ const Chat = () => {
   return (
     <div className={styles.container}>
       <Stack horizontal className={styles.chatRoot}>
-        <div className={`${styles.chatContainer} ${styles.MobileChatContainer}`}>
-          {!lastQuestionRef.current ? (
-            <Stack className={styles.chatEmptyState}>
-              <img src={Azure} className={styles.chatIcon} aria-hidden="true" />
-              <h1 className={styles.chatEmptyStateTitle}>Start chatting</h1>
-              <h2 className={styles.chatEmptyStateSubtitle}>
-                This chatbot is configured to answer your questions
-              </h2>
-            </Stack>
-          ) : (
-            <div
-              className={styles.chatMessageStream}
-              style={{ marginBottom: isLoading ? "40px" : "0px" }}
-            >
-              {answers.map((answer, index) => (
-                <>
-                  {answer.role === "user" ? (
+        <div className={styles.chatContainerMain}>
+
+          {isMenuOpen ?
+            <SmallSideBar toggleMenu={toggleMenu} /> :
+            <SideMenu isOpen={isMenuOpen} closeMenu={toggleMenu} />}
+
+          <div className={`${styles.chatContainer} ${styles.MobileChatContainer}`}>
+
+            {!lastQuestionRef.current ? (
+              <Stack className={styles.chatEmptyStateContainer}>
+                <Stack className={styles.chatEmptyState}>
+                  <div>
+                    <img src={SuperCubeLogo} className={styles.chatIcon} aria-hidden="true" />
+                  </div>
+                  <div>
+                    <h1 className={styles.chatEmptyStateTitle} >Welcome, John.</h1>
+                    <h2 className={styles.chatEmptyStateSubtitle}>
+                      What can we help you with today?
+                    </h2>
+                  </div>
+                </Stack>
+                <Stack className={styles.chatEmptyStateCenter}>
+                  <div>
+                    <h2 className={styles.chatEmptyStateCenterTitle}>
+                      Need expert help? Just Ask!
+                    </h2>
+                  </div>
+                  <div className={styles.chatEmptyStateCenterCards}>
+                    <MainCard
+                      text="Analyze hourly ER arrival patterns for this week."
+                      imgSrc={StopWatch}
+                    />
+                    <MainCard
+                      text="Suggest staffing adjustments for low-traffic periods."
+                      imgSrc={PodCast}
+                    />
+                    <MainCard
+                      text="Identify trends in ER arrivals by hour and day of the week."
+                      imgSrc={BarChart}
+                    />
+                    <MainCard
+                      text="Analyze hourly ER arrival patterns for this week."
+                      imgSrc={StopWatch}
+                    />
+                    <MainCard
+                      text="Use this raw data from the last 12 months of our throughput metrics."
+                      imgSrc={Upload}
+                    />
+                  </div>
+                </Stack>
+              </Stack>
+            ) : (
+              <div
+                className={styles.chatMessageStream}
+                style={{ marginBottom: isLoading ? "40px" : "0px" }}
+              >
+                {answers.map((answer, index) => (
+                  <>
+                    {answer.role === "user" ? (
+                      <div className={styles.chatMessageUser}>
+                        <div className={styles.chatMessageUserMessage}>
+                          {answer.content}
+                        </div>
+                      </div>
+                    ) : answer.role === "assistant" || answer.role === "error" ? (
+                      <div className={styles.chatMessageGpt}>
+                        <Answer
+                          answer={{
+                            answer:
+                              answer.role === "assistant"
+                                ? answer.content
+                                : "Sorry, an error occurred. Try refreshing the conversation or waiting a few minutes. If the issue persists, contact your system administrator. Error: " +
+                                answer.content,
+                            citations:
+                              answer.role === "assistant"
+                                ? parseCitationFromMessage(answers[index - 1])
+                                : [],
+                          }}
+                          onCitationClicked={(c) => onShowCitation(c)}
+                          index={index}
+                        />
+                      </div>
+                    ) : null}
+                  </>
+                ))}
+                {showLoadingMessage && (
+                  <>
                     <div className={styles.chatMessageUser}>
                       <div className={styles.chatMessageUserMessage}>
-                        {answer.content}
+                        {lastQuestionRef.current}
                       </div>
                     </div>
-                  ) : answer.role === "assistant" || answer.role === "error" ? (
                     <div className={styles.chatMessageGpt}>
                       <Answer
                         answer={{
-                          answer:
-                            answer.role === "assistant"
-                              ? answer.content
-                              : "Sorry, an error occurred. Try refreshing the conversation or waiting a few minutes. If the issue persists, contact your system administrator. Error: " +
-                              answer.content,
-                          citations:
-                            answer.role === "assistant"
-                              ? parseCitationFromMessage(answers[index - 1])
-                              : [],
+                          answer: "Generating answer...",
+                          citations: [],
                         }}
-                        onCitationClicked={(c) => onShowCitation(c)}
-                        index={index}
+                        onCitationClicked={() => null}
+                        index={0}
                       />
                     </div>
-                  ) : null}
-                </>
-              ))}
-              {showLoadingMessage && (
-                <>
-                  <div className={styles.chatMessageUser}>
-                    <div className={styles.chatMessageUserMessage}>
-                      {lastQuestionRef.current}
-                    </div>
-                  </div>
-                  <div className={styles.chatMessageGpt}>
-                    <Answer
-                      answer={{
-                        answer: "Generating answer...",
-                        citations: [],
-                      }}
-                      onCitationClicked={() => null}
-                      index={0}
-                    />
-                  </div>
-                </>
-              )}
-              <div ref={chatMessageStreamEnd} />
-            </div>
-          )}
-          <div>
-            {isRecognizing && !isListening && <p>Please wait...</p>}{" "}
-            {isListening && <p>Listening...</p>}{" "}
-          </div>
-
-          <Stack horizontal className={styles.chatInput}>
-            {isLoading && (
-              <Stack
-                horizontal
-                className={styles.stopGeneratingContainer}
-                role="button"
-                aria-label="Stop generating"
-                tabIndex={0}
-                onClick={stopGenerating}
-                onKeyDown={(e) =>
-                  e.key === "Enter" || e.key === " " ? stopGenerating() : null
-                }
-              >
-                <SquareRegular
-                  className={styles.stopGeneratingIcon}
-                  aria-hidden="true"
-                />
-                <span className={styles.stopGeneratingText} aria-hidden="true">
-                  Stop generating
-                </span>
-              </Stack>
+                  </>
+                )}
+                <div ref={chatMessageStreamEnd} />
+              </div>
             )}
-            <Stack>
-            <BroomRegular
-                className={`${styles.clearChatBroom} ${styles.mobileclearChatBroom}`}
-                style={{
-                  background:
-                    isLoading || answers.length === 0
-                      ? "#BDBDBD"
-                      : "radial-gradient(109.81% 107.82% at 100.1% 90.19%, #0F6CBD 33.63%, #2D87C3 70.31%, #8DDDD8 100%)",
-                  cursor: isLoading || answers.length === 0 ? "" : "pointer",
-                }}
-                onClick={clearChat}
-                onKeyDown={(e) =>
-                  e.key === "Enter" || e.key === " " ? clearChat() : null
-                }
-                aria-label="Clear session"
-                role="button"
-                tabIndex={0}
-              />
-              <AttachTextRegular
-                className={`${styles.fileAttachmentChat} ${styles.mobilefileAttachmentChat}`}
-                style={{
-                  background:
-                    isLoading
-                      ? "#BDBDBD"
-                      : "radial-gradient(109.81% 107.82% at 100.1% 90.19%, #0F6CBD 33.63%, #2D87C3 70.31%, #8DDDD8 100%)",
-                  cursor: isLoading ? "" : "pointer",
-                } }
-                onClick={onFileAttachmentClick}
+            <div>
+              {isRecognizing && !isListening && <p>Please wait...</p>}{" "}
+              {isListening && <p>Listening...</p>}{" "}
+            </div>
+
+            <Stack horizontal className={styles.chatInput}>
+              {isLoading && (
+                <Stack
+                  horizontal
+                  className={styles.stopGeneratingContainer}
+                  role="button"
+                  aria-label="Stop generating"
+                  tabIndex={0}
+                  onClick={stopGenerating}
+                  onKeyDown={(e) =>
+                    e.key === "Enter" || e.key === " " ? stopGenerating() : null
+                  }
+                >
+                  <SquareRegular
+                    className={styles.stopGeneratingIcon}
+                    aria-hidden="true"
+                  />
+                  <span className={styles.stopGeneratingText} aria-hidden="true">
+                    Stop generating
+                  </span>
+                </Stack>
+              )}
+              <Stack >
+                <BroomRegular
+                  className={`${styles.clearChatBroom} ${styles.mobileclearChatBroom}`}
+                  style={{
+                    background:
+                      isLoading || answers.length === 0
+                        ? "#BDBDBD"
+                        : "radial-gradient(109.81% 107.82% at 100.1% 90.19%, #0F6CBD 33.63%, #2D87C3 70.31%, #8DDDD8 100%)",
+                    cursor: isLoading || answers.length === 0 ? "" : "pointer",
+                  }}
+                  onClick={clearChat}
+                  onKeyDown={(e) =>
+                    e.key === "Enter" || e.key === " " ? clearChat() : null
+                  }
+                  aria-label="Clear session"
+                  role="button"
+                  tabIndex={0}
+                />
+                <AttachTextRegular
+                  className={`${styles.fileAttachmentChat} ${styles.mobilefileAttachmentChat}`}
+                  style={{
+                    background:
+                      isLoading
+                        ? "#BDBDBD"
+                        : "radial-gradient(109.81% 107.82% at 100.1% 90.19%, #0F6CBD 33.63%, #2D87C3 70.31%, #8DDDD8 100%)",
+                    cursor: isLoading ? "" : "pointer",
+                  }}
+                  onClick={onFileAttachmentClick}
+                />
+              </Stack>
+
+              <QuestionInput
+                clearOnSend
+                placeholder="Type a new question..."
+                disabled={isLoading}
+                onSend={(question, file) => makeApiRequest(question, file)}
+                recognizedText={recognizedText}
+                onMicrophoneClick={onMicrophoneClick}
+                onStopClick={stopSpeechRecognition}
+                isListening={isListening}
+                isRecognizing={isRecognizing}
+                setRecognizedText={setRecognizedText}
+                ref={questionFileInputRef}
               />
             </Stack>
-
-            <QuestionInput
-              clearOnSend
-              placeholder="Type a new question..."
-              disabled={isLoading}
-              onSend={(question, file) => makeApiRequest(question, file)}
-              recognizedText={recognizedText}
-              onMicrophoneClick={onMicrophoneClick}
-              onStopClick={stopSpeechRecognition}
-              isListening={isListening}
-              isRecognizing={isRecognizing}
-              setRecognizedText={setRecognizedText}
-              ref={questionFileInputRef}
-            />
-          </Stack>
+          </div>
         </div>
         {answers.length > 0 && isCitationPanelOpen && activeCitation && (
           <Stack.Item className={`${styles.citationPanel} ${styles.mobileStyles}`}>
