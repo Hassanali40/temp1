@@ -3,11 +3,18 @@ import {
   SpeechRecognizer,
   ResultReason,
 } from "microsoft-cognitiveservices-speech-sdk";
+import {
+  SquareRegular,
+} from "@fluentui/react-icons";
 import { v4 as uuidv4 } from "uuid";
 import SuperCubeLogo from "../../assets/SuperCubeLogo.svg";
 import StopWatch from "../../assets/StopWatch.svg";
+import CirclePlus from "../../assets/CirclePlus.svg";
 import PodCast from "../../assets/PodCast.svg";
 import BarChart from "../../assets/BarChart.svg";
+import UploadImageIcon from "../../assets/UploadImageIcon.svg";
+import FileUploadIcon from "../../assets/FileUploadIcon.svg";
+import Microsoft from "../../assets/Microsoft.svg";
 import Upload from "../../assets/Upload.svg";
 import { multiLingualSpeechRecognizer } from "../../util/SpeechToText";
 
@@ -16,6 +23,8 @@ import {
   ConversationRequest,
   customConversationApi,
   ChatResponse,
+  Citation,
+  ToolMessageContent,
 } from "../../api";
 import { QuestionInput } from "../../main-components/QuestionInput";
 import { MainCard } from "../../main-components/MainCard";
@@ -160,8 +169,10 @@ const Chat = () => {
 
   const stopSpeechRecognition = () => {
     if (isRecognizing) {
+      // console.log("Stopping continuous recognition...");
       if (recognizerRef.current) {
         recognizerRef.current.stopContinuousRecognitionAsync(() => {
+          // console.log("Speech recognition stopped.");
           recognizerRef.current?.close();
         });
       }
@@ -173,18 +184,70 @@ const Chat = () => {
 
   const onMicrophoneClick = async () => {
     if (!isRecognizing) {
+      // console.log("Starting speech recognition...");
       await startSpeechRecognition();
     } else {
+      // console.log("Stopping speech recognition...");
       stopSpeechRecognition();
       setRecognizedText(userMessage);
     }
   };
 
+  const onFileAttachmentClick = () => {
+    console.log('onFileAttachmentClick')
+    questionFileInputRef.current?.triggerClick();
+  };
+
+  const clearChat = () => {
+    lastQuestionRef.current = "";
+    setActiveCitation(undefined);
+    setAnswers([]);
+    setConversationId(uuidv4());
+  };
+
+  const stopGenerating = () => {
+    abortFuncs.current.forEach((a) => a.abort());
+    setShowLoadingMessage(false);
+    setIsLoading(false);
+  };
 
   useEffect(
     () => chatMessageStreamEnd.current?.scrollIntoView({ behavior: "smooth" }),
     [showLoadingMessage]
   );
+
+  const onShowCitation = (citation: Citation) => {
+    setActiveCitation([
+      citation.content,
+      citation.id,
+      citation.title ?? "",
+      citation.filepath ?? "",
+      "",
+      "",
+    ]);
+    setIsCitationPanelOpen(true);
+  };
+
+  const parseCitationFromMessage = (message: ChatMessage) => {
+    if (message.role === "tool") {
+      try {
+        const toolMessage = JSON.parse(message.content) as ToolMessageContent;
+        return toolMessage.citations;
+      } catch {
+        return [];
+      }
+    }
+    return [];
+  };
+
+
+
+  const [isOpenOption, setIsOpenOption] = useState(false);
+
+  // Toggle the dropdown
+  const toggleDropdown = () => {
+    setIsOpenOption(!isOpenOption);
+  };
 
 
   return (
@@ -246,10 +309,67 @@ const Chat = () => {
               </div>
             </div>
 
-            {/* <Button>Click Me!</Button> */}
-
             <div className="w-full pr-[62px] mb-5 flex flex-col justify-center items-center">
-              <div className="w-[95%] h-[51px]">
+
+              {isLoading && (
+                <div
+                  className="box-border flex flex-row justify-center items-center self-center gap-[6px] w-[201px] h-[32px] border border-[#D1D1D1] rounded-[16px] mb-[15px]"
+                  role="button"
+                  aria-label="Stop generating"
+                  tabIndex={0}
+                  onClick={stopGenerating}
+                  onKeyDown={(e) =>
+                    e.key === "Enter" || e.key === " " ? stopGenerating() : null
+                  }
+                >
+                  <SquareRegular
+                    className=" w-[21px] h-[21px]"
+                    aria-hidden="true"
+                  />
+                  <span className=" font-normal text-[14px] leading-[20px] flex items-center text-[#242424]" aria-hidden="true">
+                    Stop generating
+                  </span>
+                </div>
+              )}
+
+              <div className="w-[95%] h-[51px] relative">
+                {isOpenOption && (
+                  <div className="origin-bottom-right absolute left-0  w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none transform -translate-y-full">
+                    <div className="py-1">
+                      <a
+                        onClick={onFileAttachmentClick}
+                        href="#"
+                        className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                      >
+                        <img src={UploadImageIcon} className="h-5 w-5 mr-3" alt="Upload Image" />
+                        Upload image
+                      </a>
+                      <a
+                        onClick={onFileAttachmentClick}
+                        href="#"
+                        className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                      >
+                        <img src={FileUploadIcon} className="h-5 w-5 mr-3" alt="Upload File" />
+                        Upload file
+                      </a>
+                      <a
+                        href="#"
+                        className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                      >
+                        <img src={Microsoft} className="h-5 w-5 mr-3" alt="Connect OneDrive" />
+                        Connect OneDrive
+                      </a>
+                    </div>
+                  </div>
+                )}
+
+                <img
+                  className="absolute w-[31px] h-[31px] z-10 top-[10px] left-[12px] circlePlusIcon"
+                  src={CirclePlus}
+                  alt="Microphone"
+                  onClick={toggleDropdown}
+                />
+
                 <QuestionInput
                   clearOnSend
                   placeholder="Ask any question"

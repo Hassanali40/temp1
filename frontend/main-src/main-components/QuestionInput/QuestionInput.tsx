@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useImperativeHandle, forwardRef } from "react";
 import MicrophoneIcon from "../../assets/MicrophoneIcon.svg";
-import CirclePlus from "../../assets/CirclePlus.svg";
+import MicrophoneIconBlue from "../../assets/MicrophoneIconBlue.svg";
 import SendBtn from "../../assets/SendBtn.svg";
 
 
@@ -105,11 +105,7 @@ export const QuestionInput = forwardRef<{ triggerClick: () => void, clearFileInp
     <div className="relative w-full">
       {/* File Input Field */}
       <input type="file" hidden onChange={handleFileChange} ref={fileInputRef} />
-      <img
-        className="absolute w-[31px] h-[31px] z-10 top-[10px] left-[12px] circlePlusIcon"
-        src={CirclePlus}
-        alt="Microphone"
-      />
+
       {/* Text Input Field */}
       <input
         type="text"
@@ -123,18 +119,61 @@ export const QuestionInput = forwardRef<{ triggerClick: () => void, clearFileInp
           }
         }}
         onKeyDown={onEnterPress}
-        className="w-full h-[50px] border-2 border-[#D0D5DD] rounded-lg pl-[50px] focus:outline-none"
+        className="w-full h-[50px] border-2 border-[#D0D5DD] rounded-lg pl-[50px] focus:outline-none focus:border-[#E04F16] focus:ring-0 focus:ring-[#E04F16]-100"
       />
-      <img
-        className="absolute w-[31px] h-[31px] z-10 top-[10px] right-[12px] microphoneIcon"
-        src={MicrophoneIcon}
-        alt="Microphone"
-      />
-      <img
-        className="absolute w-[31px] h-[31px] z-10 top-[10px] right-[-52px] sendBtnIcon"
-        src={SendBtn}
-        alt="Microphone"
-      />
+
+      <div
+        onClick={isListening ? onStopClick : onMicrophoneClick}
+        onKeyDown={(e) =>
+          e.key === "Enter" || e.key === " "
+            ? isListening
+              ? onStopClick()
+              : onMicrophoneClick()
+            : null
+        }
+        role="button"
+        tabIndex={0}
+        aria-label="Microphone button"
+      >
+        {microphoneIconActive ? (
+          <img
+            className="absolute w-[31px] h-[31px] z-10 top-[10px] right-[12px] microphoneIcon"
+            src={MicrophoneIcon}
+            alt="Microphone"
+          />
+        ) : (
+          <img
+            className="absolute w-[31px] h-[31px] z-10 top-[10px] right-[12px] microphoneIcon"
+            src={MicrophoneIconBlue}
+            alt="Microphone"
+          />
+        )}
+      </div>
+
+      <div
+        role="button"
+        tabIndex={0}
+        aria-label="Ask question button"
+        onClick={sendQuestion}
+        onKeyDown={(e) =>
+          e.key === "Enter" || e.key === " " ? sendQuestion() : null
+        }
+      >
+        {disabled ? (
+          <img
+            className="absolute w-[31px] h-[31px] z-10 top-[10px] right-[-52px] sendBtnIcon"
+            src={SendBtn}
+            alt="Microphone"
+          />
+        ) : (
+          <img
+            className="absolute w-[31px] h-[31px] z-10 top-[10px] right-[-52px] sendBtnIcon"
+            src={SendBtn}
+            alt="Microphone"
+          />
+        )}
+
+      </div>
     </div>
   );
 });
