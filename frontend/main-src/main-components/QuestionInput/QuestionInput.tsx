@@ -138,13 +138,13 @@ export const QuestionInput = forwardRef<{ triggerClick: () => void, clearFileInp
         {microphoneIconActive ? (
           <img
             className="absolute w-[31px] h-[31px] z-10 top-[10px] right-[12px] microphoneIcon"
-            src={MicrophoneIcon}
+            src={MicrophoneIconBlue}
             alt="Microphone"
           />
         ) : (
           <img
             className="absolute w-[31px] h-[31px] z-10 top-[10px] right-[12px] microphoneIcon"
-            src={MicrophoneIconBlue}
+            src={MicrophoneIcon}
             alt="Microphone"
           />
         )}

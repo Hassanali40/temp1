@@ -27,9 +27,11 @@ import {
   ToolMessageContent,
 } from "../../api";
 import { QuestionInput } from "../../main-components/QuestionInput";
+import { Answer } from "../../main-components/Answer.js";
 import { MainCard } from "../../main-components/MainCard";
 import SideMenu from "../../main-components/SideMenu/SideMenu";
 import SmallSideBar from "../../main-components/SideMenuSmall/SideMenuSmall";
+// import { Answer } from "../../../main-src/main-components/Answer";
 
 const Chat = () => {
   const lastQuestionRef = useRef<string>("");
@@ -261,55 +263,115 @@ const Chat = () => {
           }
 
           <div className="flex flex-1 w-full h-full bg-[#fff] shadow-md rounded-lg overflow-auto flex-col">
-            <div className="flex flex-1 flex-col h-full bg-[#fff]">
-              <div className="flex flex-1 px-6 py-5">
-                <div className="flex flex-col flex-grow mx-auto w-[95%]">
-                  <div className="flex flex-row items-center gap-5">
-                    <div>
-                      <img src={SuperCubeLogo} className="h-20 w-20" aria-hidden="true" />
-                    </div>
-                    <div>
-                      <h1 className="text-transparent bg-gradient-to-r from-[#7B6AE0] to-[#FFBB89] bg-clip-text text-4xl font-bold leading-none">
-                        Welcome, John.
-                      </h1>
-                      <h2 className="text-[#E04F16] text-4xl font-bold	 leading-none mt-2">
-                        What can we help you with today?
-                      </h2>
-                    </div>
-                  </div>
 
-                  <div className="flex flex-col mt-12 gap-5">
-                    <h2 className="text-[#667085] text-sm font-semibold">
-                      Need expert help? Just Ask!
-                    </h2>
-                    <div className="flex flex-row flex-wrap gap-6">
-                      <MainCard
-                        text="Analyze hourly ER arrival patterns for this week."
-                        imgSrc={StopWatch}
-                      />
-                      <MainCard
-                        text="Suggest staffing adjustments for low-traffic periods."
-                        imgSrc={PodCast}
-                      />
-                      <MainCard
-                        text="Identify trends in ER arrivals by hour and day of the week."
-                        imgSrc={BarChart}
-                      />
-                      <MainCard
-                        text="Analyze hourly ER arrival patterns for this week."
-                        imgSrc={StopWatch}
-                      />
-                      <MainCard
-                        text="Use this raw data from the last 12 months of our throughput metrics."
-                        imgSrc={Upload}
-                      />
+            <div className="flex flex-1 flex-col h-full bg-[#fff]">
+              {!lastQuestionRef.current ? (
+                <div className="flex flex-1 px-6 py-5">
+                  <div className="flex flex-col flex-grow mx-auto w-[95%]">
+                    <div className="flex flex-row items-center gap-5">
+                      <div>
+                        <img src={SuperCubeLogo} className="h-20 w-20" aria-hidden="true" />
+                      </div>
+                      <div>
+                        <h1 className="text-transparent bg-gradient-to-r from-[#7B6AE0] to-[#FFBB89] bg-clip-text text-4xl font-bold leading-none">
+                          Welcome, John.
+                        </h1>
+                        <h2 className="text-[#E04F16] text-4xl font-bold	 leading-none mt-2">
+                          What can we help you with today?
+                        </h2>
+                      </div>
+                    </div>
+
+                    <div className="flex flex-col mt-12 gap-5">
+                      <h2 className="text-[#667085] text-sm font-semibold">
+                        Need expert help? Just Ask!
+                      </h2>
+                      <div className="flex flex-row flex-wrap gap-6">
+                        <MainCard
+                          text="Analyze hourly ER arrival patterns for this week."
+                          imgSrc={StopWatch}
+                        />
+                        <MainCard
+                          text="Suggest staffing adjustments for low-traffic periods."
+                          imgSrc={PodCast}
+                        />
+                        <MainCard
+                          text="Identify trends in ER arrivals by hour and day of the week."
+                          imgSrc={BarChart}
+                        />
+                        <MainCard
+                          text="Analyze hourly ER arrival patterns for this week."
+                          imgSrc={StopWatch}
+                        />
+                        <MainCard
+                          text="Use this raw data from the last 12 months of our throughput metrics."
+                          imgSrc={Upload}
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
+              ) : (
+                <div className="flex-grow max-w-[1028px] w-full overflow-y-auto px-6 flex flex-col mt-6" >
+                  {answers.map((answer, index) => (
+                    <>
+                      {answer.role === "user" ? (
+                        <div className="flex justify-end mb-3">
+                          <div className="p-5 bg-[#EDF5FD] rounded-lg shadow-[0px_2px_4px_rgba(0,0,0,0.14),0px_0px_2px_rgba(0,0,0,0.12)] text-[14px] font-normal leading-[22px] text-[#242424] flex-none order-0 flex-grow-0 whitespace-pre-wrap break-words max-w-[800px]">
+                            {answer.content}
+                          </div>
+                        </div>
+                      ) : answer.role === "assistant" || answer.role === "error" ? (
+                        <div className="mb-3 max-w-[80%] flex">
+                          <Answer
+                            answer={{
+                              answer:
+                                answer.role === "assistant"
+                                  ? answer.content
+                                  : "Sorry, an error occurred. Try refreshing the conversation or waiting a few minutes. If the issue persists, contact your system administrator. Error: " +
+                                  answer.content,
+                              citations:
+                                answer.role === "assistant"
+                                  ? parseCitationFromMessage(answers[index - 1])
+                                  : [],
+                            }}
+                            onCitationClicked={(c) => onShowCitation(c)}
+                            index={index}
+                          />
+                        </div>
+                      ) : null}
+                    </>
+                  ))}
+
+                  {showLoadingMessage && (
+                    <>
+                      <div className="flex justify-end mb-3">
+                        <div className="p-5 bg-[#EDF5FD] rounded-lg shadow-[0px_2px_4px_rgba(0,0,0,0.14),0px_0px_2px_rgba(0,0,0,0.12)] text-[14px] font-normal leading-[22px] text-[#242424] flex-none order-0 flex-grow-0 whitespace-pre-wrap break-words max-w-[800px]">
+                          {lastQuestionRef.current}
+                        </div>
+                      </div>
+                      <div className="mb-3 max-w-[80%] flex">
+                        <Answer
+                          answer={{
+                            answer: "Generating answer...",
+                            citations: [],
+                          }}
+                          onCitationClicked={() => null}
+                          index={0}
+                        />
+                      </div>
+                    </>
+                  )}
+                  <div ref={chatMessageStreamEnd} />
+                </div>
+              )}
             </div>
 
             <div className="w-full pr-[62px] mb-5 flex flex-col justify-center items-center">
+              <div>
+                {isRecognizing && !isListening && <p>Please wait...</p>}{" "}
+                {isListening && <p>Listening...</p>}{" "}
+              </div>
 
               {isLoading && (
                 <div

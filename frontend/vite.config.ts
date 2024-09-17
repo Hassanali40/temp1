@@ -16,7 +16,7 @@ export default defineConfig({
           input: {
             main: resolve(root, 'index.html'),
             admin: resolve(root, 'admin.html'),
-            mainpage: resolve(root, 'mainpage.html')
+            mainpage: resolve(root, 'main.html')
           }
         }
     },
