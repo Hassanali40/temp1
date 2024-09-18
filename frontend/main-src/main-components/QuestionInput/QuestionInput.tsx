@@ -1,7 +1,9 @@
-import React, { useState, useEffect, useRef, useImperativeHandle, forwardRef } from "react";
+import React, { useState, useEffect, useRef, useImperativeHandle, forwardRef, useContext } from "react";
 import MicrophoneIcon from "../../assets/MicrophoneIcon.svg";
 import MicrophoneIconBlue from "../../assets/MicrophoneIconBlue.svg";
 import SendBtn from "../../assets/SendBtn.svg";
+import SendBtnWhite from "../../assets/SendBtnWhite.svg";
+import { AppContext } from "../../store/context/AppContext";
 
 
 interface Props {
@@ -29,6 +31,11 @@ export const QuestionInput = forwardRef<{ triggerClick: () => void, clearFileInp
   isRecognizing,
   setRecognizedText,
 }, ref) => {
+  const context = useContext(AppContext);
+  if (!context) {
+    throw new Error("useContext must be used within an AppContext.Provider");
+  }
+  const { isDarkMode } = context;
   const [question, setQuestion] = useState<string>("");
   const [liveRecognizedText, setLiveRecognizedText] = useState<string>("");
   const [microphoneIconActive, setMicrophoneIconActive] =
@@ -119,7 +126,7 @@ export const QuestionInput = forwardRef<{ triggerClick: () => void, clearFileInp
           }
         }}
         onKeyDown={onEnterPress}
-        className="w-full h-[50px] border-2 border-[#D0D5DD] rounded-lg pl-[50px] focus:outline-none focus:border-[#E04F16] focus:ring-0 focus:ring-[#E04F16]-100"
+        className="w-full h-[50px] border-2 border-[#D0D5DD] dark:placeholder-[#fff] dark:bg-[#1A202C] dark:text-white rounded-lg pl-[50px] focus:outline-none focus:border-[#E04F16] focus:ring-0 focus:ring-[#E04F16]-100"
       />
 
       <div
@@ -162,13 +169,13 @@ export const QuestionInput = forwardRef<{ triggerClick: () => void, clearFileInp
         {disabled ? (
           <img
             className="absolute w-[31px] h-[31px] z-10 top-[10px] right-[-52px] sendBtnIcon"
-            src={SendBtn}
+            src={isDarkMode ? SendBtn : SendBtnWhite}
             alt="Microphone"
           />
         ) : (
           <img
             className="absolute w-[31px] h-[31px] z-10 top-[10px] right-[-52px] sendBtnIcon"
-            src={SendBtn}
+            src={isDarkMode ? SendBtn : SendBtnWhite}
             alt="Microphone"
           />
         )}

@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useContext } from "react";
 import {
   SpeechRecognizer,
   ResultReason,
@@ -10,6 +10,7 @@ import { v4 as uuidv4 } from "uuid";
 import SuperCubeLogo from "../../assets/SuperCubeLogo.svg";
 import StopWatch from "../../assets/StopWatch.svg";
 import CirclePlus from "../../assets/CirclePlus.svg";
+import CirclePlusWhite from "../../assets/CirclePlusWhite.svg";
 import PodCast from "../../assets/PodCast.svg";
 import BarChart from "../../assets/BarChart.svg";
 import UploadImageIcon from "../../assets/UploadImageIcon.svg";
@@ -31,9 +32,18 @@ import { Answer } from "../../main-components/Answer.js";
 import { MainCard } from "../../main-components/MainCard";
 import SideMenu from "../../main-components/SideMenu/SideMenu";
 import SmallSideBar from "../../main-components/SideMenuSmall/SideMenuSmall";
-// import { Answer } from "../../../main-src/main-components/Answer";
+import { AppContext } from "../../store/context/AppContext";
 
 const Chat = () => {
+
+  const context = useContext(AppContext);
+  
+  if (!context) {
+    throw new Error("useContext must be used within an AppContext.Provider");
+  }
+
+  const { isDarkMode } = context;
+
   const lastQuestionRef = useRef<string>("");
   const chatMessageStreamEnd = useRef<HTMLDivElement | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -242,6 +252,10 @@ const Chat = () => {
     return [];
   };
 
+  // useEffect(() => {
+  //   document.documentElement.classList.add('dark');
+  // }, []);
+
 
 
   const [isOpenOption, setIsOpenOption] = useState(false);
@@ -253,7 +267,7 @@ const Chat = () => {
 
 
   return (
-    <div className="flex flex-1 flex-col h-full bg-[#FEF6EE]">
+    <div className="flex flex-1 flex-col h-full bg-[#FEF6EE] dark:bg-[#1A202C]" >
       <div className="flex flex-1 p-[30px] pr-[30px] pb-[20px] pl-[15px]">
         <div className="flex w-full">
 
@@ -262,9 +276,9 @@ const Chat = () => {
             <SmallSideBar toggleMenu={toggleMenu} />
           }
 
-          <div className="flex flex-1 w-full h-full bg-[#fff] shadow-md rounded-lg overflow-auto flex-col">
+          <div className="flex flex-1 w-full h-full bg-[#fff] dark:bg-[#334054]  dark:border dark:border-white shadow-md rounded-lg overflow-auto flex-col">
 
-            <div className="flex flex-1 flex-col h-full bg-[#fff]">
+            <div className="flex flex-1 flex-col h-full bg-[#fff] dark:bg-[#334054]">
               {!lastQuestionRef.current ? (
                 <div className="flex flex-1 px-6 py-5">
                   <div className="flex flex-col flex-grow mx-auto w-[95%]">
@@ -283,7 +297,7 @@ const Chat = () => {
                     </div>
 
                     <div className="flex flex-col mt-12 gap-5">
-                      <h2 className="text-[#667085] text-sm font-semibold">
+                      <h2 className="text-[#667085] text-sm font-semibold dark:text-white">
                         Need expert help? Just Ask!
                       </h2>
                       <div className="flex flex-row flex-wrap gap-6">
@@ -367,7 +381,7 @@ const Chat = () => {
               )}
             </div>
 
-            <div className="w-full pr-[62px] mb-5 flex flex-col justify-center items-center">
+            <div className="w-full pr-[62px] pb-5 flex flex-col justify-center items-center ">
               <div>
                 {isRecognizing && !isListening && <p>Please wait...</p>}{" "}
                 {isListening && <p>Listening...</p>}{" "}
@@ -375,7 +389,7 @@ const Chat = () => {
 
               {isLoading && (
                 <div
-                  className="box-border flex flex-row justify-center items-center self-center gap-[6px] w-[201px] h-[32px] border border-[#D1D1D1] rounded-[16px] mb-[15px]"
+                  className="box-border flex flex-row justify-center items-center self-center gap-[6px] w-[201px] h-[32px] border border-[#D1D1D1] rounded-[16px] mb-[15px] "
                   role="button"
                   aria-label="Stop generating"
                   tabIndex={0}
@@ -393,7 +407,6 @@ const Chat = () => {
                   </span>
                 </div>
               )}
-
               <div className="w-[95%] h-[51px] relative">
                 {isOpenOption && (
                   <div className="origin-bottom-right absolute left-0  w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none transform -translate-y-full">
@@ -427,7 +440,7 @@ const Chat = () => {
 
                 <img
                   className="absolute w-[31px] h-[31px] z-10 top-[10px] left-[12px] circlePlusIcon"
-                  src={CirclePlus}
+                  src={isDarkMode ? CirclePlus : CirclePlusWhite}
                   alt="Microphone"
                   onClick={toggleDropdown}
                 />

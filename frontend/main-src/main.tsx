@@ -6,16 +6,18 @@ import Layout from "../src/pages/layout/Layout";
 import NoPage from "../src/pages/NoPage";
 import MainPage from './page/main-page/MainPage'
 import './main.css'
+import { AppProvider } from './store/context/AppContext';
 initializeIcons();
 
 export default function App() {
     return (
         <HashRouter>
-            <Routes>
+            <AppProvider>
+                <Routes>
                     <Route path="/" element={<MainPage />} />
-
                     <Route path="*" element={<NoPage />} />
-            </Routes>
+                </Routes>
+            </AppProvider>
         </HashRouter>
     );
 }

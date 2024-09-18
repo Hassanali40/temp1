@@ -11,11 +11,11 @@ interface SmallSideBarProps {
 
 const SmallSideBar: React.FC<SmallSideBarProps> = ({ toggleMenu }) => {
     return (
-        <div className="bg-[#FEF6EE] flex flex-col justify-between w-[110px] h-full pr-[15px]">
+        <div className="bg-[#FEF6EE] dark:bg-[#1A202C] flex flex-col justify-between w-[110px] h-full pr-[15px]">
             <div className="w-full">
                 <div className="flex flex-row justify-between items-center w-full">
                     <img src={SuperCubeLogo} className="h-[36px] w-[36px] rounded-lg" aria-hidden="true" />
-                    <img onClick={toggleMenu} src={ArrowSquareRight} className="h-[29px] w-[29px]" aria-hidden="true" />
+                    <img onClick={toggleMenu} src={ArrowSquareRight} className="h-[29px] w-[29px] cursor-pointer" aria-hidden="true" />
                 </div>
                 <div className="w-full mt-5 bg-[#E04F16] h-[39px] rounded-lg flex justify-center items-center cursor-pointer">
                     <img src={EditWhiteIcon} className="h-[28px] w-[28px]" aria-hidden="true" />
