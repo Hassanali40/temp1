@@ -297,7 +297,7 @@ const Chat = () => {
                     </div>
 
                     <div className="flex flex-col mt-12 gap-5">
-                      <h2 className="text-[#667085] text-sm font-semibold dark:text-white">
+                      <h2 className="text-[#667085] font-semibold dark:text-white mt-12">
                         Need expert help? Just Ask!
                       </h2>
                       <div className="flex flex-row flex-wrap gap-6">

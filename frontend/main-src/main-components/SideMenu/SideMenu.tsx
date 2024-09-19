@@ -63,13 +63,13 @@ const SideMenu: React.FC<SideMenuProps> = ({ isOpen, closeMenu }) => {
                 </div>
 
                 <div className="mt-5">
-                    <div className="flex justify-center items-center gap-2 bg-[#D85836] text-white h-[39px] rounded-lg mb-5 cursor-pointer">
+                    <div className="flex justify-center items-center gap-2 bg-[#D85836] text-white h-[39px] rounded-lg mb-8 cursor-pointer">
                         <img src={EditBtn} className="h-[22px] w-[22px]" onClick={closeMenu} aria-hidden="true" />
                         <button className="bg-transparent text-white font-semibold text-[16px]">New chat</button>
                     </div>
 
                     <div className="mb-5">
-                        <p className="text-[#475467] text-[14px] font-bold mb-2 dark:text-white">Today</p>
+                        <p className="text-[#475467] text-[14px] font-bold mb-4 dark:text-white">Today</p>
                         <div className="flex justify-between items-center gap-2 bg-[#D85836] text-white h-[36px] px-3 rounded mb-5 cursor-pointer">
                             <button className="bg-transparent text-white text-[16px]">New chat</button>
                             <img src={DotsVertical} className="h-[23px] w-[23px]" onClick={closeMenu} aria-hidden="true" />
