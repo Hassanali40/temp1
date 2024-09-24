@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
-import { multiLingualSpeechRecognizer } from "../src/util/SpeechToText.js";
+import { multiLingualSpeechRecognizer } from "../../src/util/SpeechToText.js";
 
 global.fetch = vi.fn();
 const createFetchResponse = (ok, data) => {

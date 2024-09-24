@@ -14,6 +14,12 @@ export async function conversationApi(options: ConversationRequest, abortSignal:
         signal: abortSignal
     });
 
+    if (!response.ok) {
+        throw new Error(JSON.stringify({
+            message: response.statusText,
+        }));
+    }
+
     return response;
 }
 
@@ -32,6 +38,12 @@ export async function customConversationApi(options: ConversationRequest, abortS
         body: formData,
         signal: abortSignal
     });
+
+    if (!response.ok) {
+        throw new Error(JSON.stringify({
+            message: response.statusText,
+        }));
+    }
 
     return response;
 }
