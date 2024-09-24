@@ -72,7 +72,9 @@ const SideMenu: React.FC<SideMenuProps> = ({ isOpen, closeMenu }) => {
                         <p className="text-[#475467] text-[14px] font-bold mb-4 dark:text-white">Today</p>
                         <div className="flex justify-between items-center gap-2 bg-[#D85836] text-white h-[36px] px-3 rounded mb-5 cursor-pointer">
                             <button className="bg-transparent text-white text-[16px]">New chat</button>
-                            <img src={DotsVertical} className="h-[23px] w-[23px]" onClick={closeMenu} aria-hidden="true" />
+                            <button onClick={closeMenu} aria-label="Close menu">
+                                <img src={DotsVertical} className="h-[23px] w-[23px]" alt="" />
+                            </button>
                         </div>
                     </div>
                 </div>
