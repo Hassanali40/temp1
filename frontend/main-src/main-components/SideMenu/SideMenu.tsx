@@ -1,24 +1,26 @@
 import React, { useContext, useEffect, useState } from 'react';
-import SuperCubeLogo from "../../assets/SuperCubeLogo.svg";
-import ArrowSquare from "../../assets/ArrowSquare.svg";
-import ArrowSquareWhite from "../../assets/ArrowSquareWhite.svg";
-import EditBtn from "../../assets/EditBtn.svg";
-import DotsVertical from "../../assets/DotsVertical.svg";
-import ClockRewind from "../../assets/ClockRewind.svg";
-import Settings from "../../assets/Settings.svg";
-import Lightning from "../../assets/Lightning.svg";
-import LogOut from "../../assets/LogOut.svg";
-import ClockRewindWhite from "../../assets/ClockRewindWhite.svg";
-import SettingsWhite from "../../assets/SettingsWhite.svg";
-import LightningWhite from "../../assets/LightningWhite.svg";
-import LogOutWhite from "../../assets/LogOutWhite.svg";
-import ChevronDown from "../../assets/ChevronDown.svg";
-import ChevronUp from "../../assets/ChevronUp.svg";
-import SunWhite from "../../assets/SunWhite.svg";
-import SunBlack from "../../assets/SunBlack.svg";
-import MoonBlack from "../../assets/MoonBlack.svg";
-import MoonWhite from "../../assets/MoonWhite.svg";
-import { AppContext } from '../../store/context/AppContext';
+import { AppContextTheme } from '../../store/context/AppContext';
+import {
+    SuperCubeLogo,
+    ArrowSquare,
+    ArrowSquareWhite,
+    EditBtn,
+    DotsVertical,
+    ClockRewind,
+    Settings,
+    Lightning,
+    LogOut,
+    ClockRewindWhite,
+    SettingsWhite,
+    LightningWhite,
+    LogOutWhite,
+    ChevronDown,
+    ChevronUp,
+    SunWhite,
+    SunBlack,
+    MoonBlack,
+    MoonWhite
+} from "../../assets";
 
 interface SideMenuProps {
     isOpen: boolean;
@@ -27,10 +29,10 @@ interface SideMenuProps {
 
 const SideMenu: React.FC<SideMenuProps> = ({ isOpen, closeMenu }) => {
 
-    const context = useContext(AppContext);
+    const context = useContext(AppContextTheme);
 
     if (!context) {
-        throw new Error("useContext must be used within an AppContext.Provider");
+        throw new Error("useContext must be used within an AppContextTheme.Provider");
     }
 
     const { isDarkMode, setIsDarkMode } = context;

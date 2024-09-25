@@ -1,4 +1,4 @@
-// src > store > context > AppContext.tsx
+// src > store > context > AppContextTheme.tsx
 import React, { createContext, useState, ReactNode } from 'react';
 
 interface AppContextType {
@@ -7,7 +7,7 @@ interface AppContextType {
 }
 
 // Create the context
-export const AppContext = createContext<AppContextType | undefined>(undefined);
+export const AppContextTheme = createContext<AppContextType | undefined>(undefined);
 
 // Create a provider component
 export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
@@ -16,8 +16,8 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
 
 
     return (
-        <AppContext.Provider value={{ isDarkMode, setIsDarkMode }}>
+        <AppContextTheme.Provider value={{ isDarkMode, setIsDarkMode }}>
             {children}
-        </AppContext.Provider>
+        </AppContextTheme.Provider>
     );
 };

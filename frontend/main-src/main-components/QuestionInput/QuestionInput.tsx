@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useRef, useImperativeHandle, forwardRef, useContext } from "react";
-import MicrophoneIcon from "../../assets/MicrophoneIcon.svg";
-import MicrophoneIconBlue from "../../assets/MicrophoneIconBlue.svg";
-import SendBtn from "../../assets/SendBtn.svg";
-import SendBtnWhite from "../../assets/SendBtnWhite.svg";
-import { AppContext } from "../../store/context/AppContext";
+import { AppContextTheme } from "../../store/context/AppContext";
+import {
+  MicrophoneIcon,
+  MicrophoneIconBlue,
+  SendBtn,
+  SendBtnWhite
+} from "../../assets"
 
 
 interface Props {
@@ -31,9 +33,9 @@ export const QuestionInput = forwardRef<{ triggerClick: () => void, clearFileInp
   isRecognizing,
   setRecognizedText,
 }, ref) => {
-  const context = useContext(AppContext);
+  const context = useContext(AppContextTheme);
   if (!context) {
-    throw new Error("useContext must be used within an AppContext.Provider");
+    throw new Error("useContext must be used within an AppContextTheme.Provider");
   }
   const { isDarkMode } = context;
   const [question, setQuestion] = useState<string>("");

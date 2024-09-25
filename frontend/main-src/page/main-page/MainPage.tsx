@@ -7,18 +7,7 @@ import {
   SquareRegular,
 } from "@fluentui/react-icons";
 import { v4 as uuidv4 } from "uuid";
-import SuperCubeLogo from "../../assets/SuperCubeLogo.svg";
-import StopWatch from "../../assets/StopWatch.svg";
-import CirclePlus from "../../assets/CirclePlus.svg";
-import CirclePlusWhite from "../../assets/CirclePlusWhite.svg";
-import PodCast from "../../assets/PodCast.svg";
-import BarChart from "../../assets/BarChart.svg";
-import UploadImageIcon from "../../assets/UploadImageIcon.svg";
-import FileUploadIcon from "../../assets/FileUploadIcon.svg";
-import Microsoft from "../../assets/Microsoft.svg";
-import Upload from "../../assets/Upload.svg";
 import { multiLingualSpeechRecognizer } from "../../util/SpeechToText";
-
 import {
   ChatMessage,
   ConversationRequest,
@@ -32,14 +21,26 @@ import { Answer } from "../../main-components/Answer.js";
 import { MainCard } from "../../main-components/MainCard";
 import SideMenu from "../../main-components/SideMenu/SideMenu";
 import SmallSideBar from "../../main-components/SideMenuSmall/SideMenuSmall";
-import { AppContext } from "../../store/context/AppContext";
+import { AppContextTheme } from "../../store/context/AppContext";
+import {
+  SuperCubeLogo,
+  StopWatch,
+  CirclePlus,
+  CirclePlusWhite,
+  PodCast,
+  UploadImageIcon,
+  BarChart,
+  FileUploadIcon,
+  Microsoft,
+  Upload
+} from "../../assets";
 
 const Chat = () => {
 
-  const context = useContext(AppContext);
-  
+  const context = useContext(AppContextTheme);
+
   if (!context) {
-    throw new Error("useContext must be used within an AppContext.Provider");
+    throw new Error("useContext must be used within an AppContextTheme.Provider");
   }
 
   const { isDarkMode } = context;
@@ -112,7 +113,7 @@ const Chat = () => {
           const { done, value } = await reader.read();
           if (done) break;
 
-          var text = new TextDecoder("utf-8").decode(value);
+          let text = new TextDecoder("utf-8").decode(value);
           const objects = text.split("\n");
           objects.forEach((obj) => {
             try {
@@ -268,7 +269,7 @@ const Chat = () => {
 
   return (
     <div className="flex flex-1 flex-col h-full bg-[#FEF6EE] dark:bg-[#1A202C]" >
-      <div className="flex flex-1 p-[30px] pr-[30px] pb-[20px] pl-[15px]">
+      <div className="flex flex-1 p-7 pr-7 pb-5 pl-5">
         <div className="flex w-full">
 
           {isMenuOpen ?

@@ -1,9 +1,12 @@
 import React from 'react';
-import SuperCubeLogo from "../../assets/SuperCubeLogo.svg";
-import EditWhiteIcon from "../../assets/EditWhiteIcon.svg";
-import SunWhite from "../../assets/SunWhite.svg";
-import ArrowSquareRight from "../../assets/ArrowSquareRight.svg";
-import ChevronDown from "../../assets/ChevronDown.svg";
+import {
+    SuperCubeLogo,
+    EditWhiteIcon,
+    SunWhite,
+    ArrowSquareRight,
+    ChevronDown
+} from "../../assets";
+
 
 interface SmallSideBarProps {
     toggleMenu: () => void;
