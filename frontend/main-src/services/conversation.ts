@@ -51,7 +51,8 @@ export default class ConversationService {
         return this.client
             .post<Response>(CUSTOM_CONVERSATION, { body: formData, signal: abortSignal })
             .then(response => {
-                return response;
+                let data = { ...defaultConversation, ...response, wasLoaded: true };
+                return data;
             })
             .catch(error => {
                 /* appInsightsException(error); */

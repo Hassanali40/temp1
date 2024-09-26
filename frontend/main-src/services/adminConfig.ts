@@ -49,6 +49,4 @@ export default class AdminConfigService {
                 return null;
             });
     }
-
-
 }
