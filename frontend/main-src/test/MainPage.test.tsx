@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import { AppContext } from '../store/context/AppContext';
+import { AppContextTheme } from '../store/context/AppContext';
 import SideMenu from '../main-components/SideMenu/SideMenu';
 import { describe, expect, it, vi } from 'vitest';
 
@@ -11,9 +11,9 @@ const mockContextValue = {
 
 const renderComponent = (isOpen = true, closeMenu = vi.fn()) => {
   render(
-    <AppContext.Provider value={mockContextValue}>
+    <AppContextTheme.Provider value={mockContextValue}>
       <SideMenu isOpen={isOpen} closeMenu={closeMenu} />
-    </AppContext.Provider>
+    </AppContextTheme.Provider>
   );
 };
 
