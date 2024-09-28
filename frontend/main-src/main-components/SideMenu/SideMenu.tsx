@@ -1,21 +1,13 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { AppContextTheme } from '../../store/context/AppContext';
+import UserInformationDropdown from "../UserInformationDropdown/UserInformationDropdown"
+
 import {
     SuperCubeLogo,
     ArrowSquare,
     ArrowSquareWhite,
     EditBtn,
     DotsVertical,
-    ClockRewind,
-    Settings,
-    Lightning,
-    LogOut,
-    ClockRewindWhite,
-    SettingsWhite,
-    LightningWhite,
-    LogOutWhite,
-    ChevronDown,
-    ChevronUp,
     SunWhite,
     SunBlack,
     MoonBlack,
@@ -30,6 +22,7 @@ interface SideMenuProps {
 const SideMenu: React.FC<SideMenuProps> = ({ isOpen, closeMenu }) => {
 
     const context = useContext(AppContextTheme);
+    const isDarkModeOn = false; // or true, depending on the mode
 
     if (!context) {
         throw new Error("useContext must be used within an AppContextTheme.Provider");
@@ -83,37 +76,7 @@ const SideMenu: React.FC<SideMenuProps> = ({ isOpen, closeMenu }) => {
             </div>
 
             <div className="mt-5">
-                <div className="flex flex-col items-center mt-5 p-2 bg-transparent rounded-lg border border-[#D0D5DD]">
-                    <div className="flex flex-row items-center gap-3 w-full">
-                        <img src="https://www.shutterstock.com/image-photo/happy-black-man-mature-portrait-260nw-2281799533.jpg" alt="Profile" className="w-[45px] h-[45px] rounded-full object-cover" />
-                        <div>
-                            <p className="m-0 text-[#344054] text-[14px] font-semibold leading-5 dark:text-white">Dr. John Drummond</p>
-                            <p className="m-0 text-[#344054] text-[12px] font-normal leading-[18px] dark:text-white">Bellevue Medical Centre</p>
-                        </div>
-                        <img src={isOpenProfile ? ChevronUp : ChevronDown} onClick={() => setIsOpenProfile(!isOpenProfile)} className="h-[24px] w-[24px] ml-auto cursor-pointer" aria-hidden="true" />
-                    </div>
-
-                    {isOpenProfile && (
-                        <div className="w-full mt-3">
-                            <div className="flex items-center gap-3 mt-2">
-                                <img src={isDarkMode ? ClockRewind : ClockRewindWhite} className="h-[24px] w-[24px]" onClick={closeMenu} aria-hidden="true" />
-                                <p className="m-0 text-[#344054] text-[14px] dark:text-white">History</p>
-                            </div>
-                            <div className="flex items-center gap-3 mt-2">
-                                <img src={isDarkMode ? Settings : SettingsWhite} className="h-[24px] w-[24px]" onClick={closeMenu} aria-hidden="true" />
-                                <p className="m-0 text-[#344054] text-[14px] dark:text-white">Settings</p>
-                            </div>
-                            <div className="flex items-center gap-3 mt-2">
-                                <img src={isDarkMode ? Lightning : LightningWhite} className="h-[24px] w-[24px]" onClick={closeMenu} aria-hidden="true" />
-                                <a href="/admin"><p className="m-0 text-[#344054] text-[14px] dark:text-white">Admin Panel</p></a>
-                            </div>
-                            <div className="flex items-center gap-3 mt-2">
-                                <img src={isDarkMode ? LogOut : LogOutWhite} className="h-[24px] w-[24px]" onClick={closeMenu} aria-hidden="true" />
-                                <p className="m-0 text-[#344054] text-[14px] dark:text-white">Logout</p>
-                            </div>
-                        </div>
-                    )}
-                </div>
+                <UserInformationDropdown isDarkMode={isDarkModeOn} />
 
                 <div className="flex justify-between mt-5 px-1 py-1 rounded-md bg-[#fdc6a4] dark:bg-[#521e27]">
                     <button className={"flex items-center justify-center flex-1 rounded-md py-2 px-2 bg-[#fff] font-semibold	dark:bg-[#521e27] dark:text-white"} onClick={() => setIsDarkMode(true)}>

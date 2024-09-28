@@ -1,6 +1,10 @@
 import { create } from 'zustand'
 import { createSessionStore, ISessionStore } from './session'
+import { createUserStore, IUserStore } from './user'
 
-export const useGlobalStore = create<ISessionStore>((...a) => ({
+export interface IGlobalStore extends ISessionStore, IUserStore {}
+
+export const useGlobalStore = create<IGlobalStore>((...a) => ({
   ...createSessionStore(...a),
+  ...createUserStore(...a),
 }))
