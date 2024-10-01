@@ -13,13 +13,13 @@ export const defaultUserData: UserData = {
 
 export interface IUserStore {
     userData: UserData;
-    setUserData: (userId: string) => void;
+    setUserData: () => void;
     updateUser: (userId: string, updates: Partial<Pick<UserData, keyof UserData>>) => void;
 }
 
-const getUserData = (userId: string, get: () => IUserStore): UserData | null => {
+const getUserData = (get: () => IUserStore): UserData | null => {
     const { userData } = get();
-    return userData.id === userId ? userData : null;
+    return userData
 }
 
 const updateUserData = (userData: UserData, userId: string, updates: Partial<Pick<UserData, keyof UserData>>): UserData => {
@@ -29,8 +29,8 @@ const updateUserData = (userData: UserData, userId: string, updates: Partial<Pic
 export const createUserStore: StateCreator<IUserStore> = (set, get) => ({
     userData: defaultUserData,
 
-    setUserData: (userId: string) => {
-        const user = getUserData(userId, get);
+    setUserData: () => {
+        const user = getUserData(get);
         if (user) {
             set((state) => ({ ...state, userData: user }));
         }

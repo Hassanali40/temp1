@@ -1,6 +1,6 @@
 import { UserData } from "../interfaces/user";
 import ApiClient from "./api";
-import { API_URLS } from '../constants/api'
+import { API_URLS } from './routes'
 const { USER } = API_URLS;
 import { getMockUserData } from '../constants/mockData'
 
@@ -52,7 +52,7 @@ export default class UserDataService {
         //     });   
     }
 
-    async UpdateUser(params?: UserData) {
+    async updateUser(params?: UserData) {
         return this.client
             .post<UserData>(USER, { params })
             .then(response => {
@@ -61,7 +61,7 @@ export default class UserDataService {
             })
             .catch(error => {
                 /*appInsightsException(error);*/
-                console.log("Error creating a session: ", error.message);
+                console.log("Error updating the user: ", error.message);
                 return null;
             });
     };

@@ -5,6 +5,6 @@ export const API_URLS = {
   CONFIGURATION: `/api/config_data`,
   CONVERSATION: `/api/conversation/azure_byod`,
   CUSTOM_CONVERSATION: `/api/conversation/custom`,
-
+  USER: `/api/user`,
   PING: '/api/ping',
 };

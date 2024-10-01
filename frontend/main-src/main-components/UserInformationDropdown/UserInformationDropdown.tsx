@@ -55,45 +55,53 @@ const UserInformationDropdown: React.FC<ProfileDropdownProps> = ({ isDarkMode })
                         {UserDetails?.bannerMessage}
                     </p>
                 </div>
-                <img
-                    src={isOpenProfile ? ChevronUp : ChevronDown}
-                    onClick={() => setIsOpenProfile(!isOpenProfile)}
-                    className="h-[24px] w-[24px] ml-auto cursor-pointer"
-                    aria-hidden="true"
-                    alt="openprofile"
-                />
+                <button>
+                    <img
+                        src={isOpenProfile ? ChevronUp : ChevronDown}
+                        onClick={() => setIsOpenProfile(!isOpenProfile)}
+                        className="h-[24px] w-[24px] ml-auto cursor-pointer"
+                        aria-hidden="true"
+                        alt="openprofile"
+                    />
+                </button>
             </div>
 
             {isOpenProfile && (
                 <div className="w-full mt-3">
                     <div className="flex items-center gap-3 mt-2">
-                        <img
-                            src={isDarkMode ? ClockRewind : ClockRewindWhite}
-                            className="h-[24px] w-[24px]"
-                            onClick={closeMenu}
-                            aria-hidden="true"
-                            alt="clonemenu"
-                        />
+                        <button>
+                            <img
+                                src={isDarkMode ? ClockRewind : ClockRewindWhite}
+                                className="h-[24px] w-[24px]"
+                                onClick={closeMenu}
+                                aria-hidden="true"
+                                alt="clonemenu"
+                            />
+                        </button>
                         <p className="m-0 text-[#344054] text-[14px] dark:text-white">History</p>
                     </div>
                     <div className="flex items-center gap-3 mt-2">
-                        <img
-                            src={isDarkMode ? Settings : SettingsWhite}
-                            className="h-[24px] w-[24px]"
-                            onClick={closeMenu}
-                            aria-hidden="true"
-                            alt="history"
-                        />
+                        <button>
+                            <img
+                                src={isDarkMode ? Settings : SettingsWhite}
+                                className="h-[24px] w-[24px]"
+                                onClick={closeMenu}
+                                aria-hidden="true"
+                                alt="history"
+                            />
+                        </button>
                         <p className="m-0 text-[#344054] text-[14px] dark:text-white">Settings</p>
                     </div>
                     <div className="flex items-center gap-3 mt-2">
-                        <img
-                            src={isDarkMode ? Lightning : LightningWhite}
-                            className="h-[24px] w-[24px]"
-                            onClick={closeMenu}
-                            aria-hidden="true"
-                            alt="setting"
-                        />
+                        <button>
+                            <img
+                                src={isDarkMode ? Lightning : LightningWhite}
+                                className="h-[24px] w-[24px]"
+                                onClick={closeMenu}
+                                aria-hidden="true"
+                                alt="setting"
+                            />
+                        </button>
                         <a href="/admin">
                             <p className="m-0 text-[#344054] text-[14px] dark:text-white">Admin Panel</p>
                         </a>

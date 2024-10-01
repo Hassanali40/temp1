@@ -21,7 +21,7 @@ export default function useUserData() {
 
     const updateUserData = async () => {
         try {
-            const updatedUser = await userDataService.UpdateUser(defaultUserData)
+            const updatedUser = await userDataService.updateUser(defaultUserData)
             if (updatedUser) {
                 updateUser(updatedUser.id, updatedUser)
             }
