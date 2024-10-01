@@ -1,99 +1,98 @@
 .smallSideBarContainer {
-    background-color: #FEF6EE;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    width: 110px;
-    height: 100%;
-    padding: 0 15px 0 0;
+  background-color: #fef6ee;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 110px;
+  height: 100%;
+  padding: 0 15px 0 0;
 }
 
-.smallSideBarTopContent {}
+.smallSideBarTopContent {
+}
 
 .smallSideBarTopIcons {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .logoIcon {
-    height: 36px;
-    width: 36px;
-    border-radius: 10px;
+  height: 36px;
+  width: 36px;
+  border-radius: 10px;
 }
 
 .openButton {
-    height: 29px;
-    width: 29px;
+  height: 29px;
+  width: 29px;
 }
 
 .editIconButton {
-    width: 100%;
-    margin-top: 20px;
-    border-radius: 8px;
-    height: 39px;
-    background: #E04F16;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-
+  width: 100%;
+  margin-top: 20px;
+  border-radius: 8px;
+  height: 39px;
+  background: #e04f16;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
 }
 
 .EditButton {
-    height: 28px;
-    width: 28px;
+  height: 28px;
+  width: 28px;
 }
 
 .smallSideBarBottomContent {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .smallSideBarBottomImage {
-    display: flex;
-    width: 100%;
-    height: 74px;
-    justify-content: space-around;
-    align-items: center;
-    border-radius: 10px;
-    border: 1px solid #D0D5DD;
+  display: flex;
+  width: 100%;
+  height: 74px;
+  justify-content: space-around;
+  align-items: center;
+  border-radius: 10px;
+  border: 1px solid #d0d5dd;
 }
 
 .profileImage {
-    display: flex;
-    width: 42px;
-    height: 42px;
-    justify-content: center;
-    align-items: center;
-    border-radius: 9999px;
-    object-fit: cover;
+  display: flex;
+  width: 42px;
+  height: 42px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 9999px;
+  object-fit: cover;
 }
 
 .downIcon {
-    display: flex;
-    width: 24px;
-    height: 24px;
+  display: flex;
+  width: 24px;
+  height: 24px;
 }
 
 .editIconButton {
-    width: 100%;
-    margin-top: 20px;
-    border-radius: 8px;
-    height: 39px;
-    background: #E04F16;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-
+  width: 100%;
+  margin-top: 20px;
+  border-radius: 8px;
+  height: 39px;
+  background: #e04f16;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
 }
 
 .EditButton {
-    height: 22px;
-    width: 22px;
+  height: 22px;
+  width: 22px;
 }

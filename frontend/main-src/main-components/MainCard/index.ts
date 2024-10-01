@@ -1,1 +1,1 @@
-export * from "./MainCard";
+export * from './MainCard';

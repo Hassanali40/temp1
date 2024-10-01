@@ -13,7 +13,7 @@ const renderComponent = (isOpen = true, closeMenu = vi.fn()) => {
   render(
     <AppContextTheme.Provider value={mockContextValue}>
       <SideMenu isOpen={isOpen} closeMenu={closeMenu} />
-    </AppContextTheme.Provider>
+    </AppContextTheme.Provider>,
   );
 };
 
@@ -31,17 +31,14 @@ describe('SideMenu Component', () => {
     expect(mockContextValue.setIsDarkMode).toHaveBeenCalledWith(false);
   });
 
-
   it('calls closeMenu when the close button is clicked', () => {
     const closeMenu = vi.fn();
     renderComponent(true, closeMenu);
 
-    const closeButtons = screen.getAllByRole('button', { name: /close menu/i });
+    const closeButtons = screen.getAllByTestId('minimize-sidebar');
 
     fireEvent.click(closeButtons[closeButtons.length - 1]); // Click the last one, or adjust as needed
 
     expect(closeMenu).toHaveBeenCalledTimes(1);
   });
-
-
 });

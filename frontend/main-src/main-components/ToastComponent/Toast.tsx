@@ -1,36 +1,35 @@
 import React, { forwardRef, useImperativeHandle, useState } from 'react';
-import { MessageBar, Stack, DefaultButton } from '@fluentui/react';
+import { MessageBar, MessageBarType, Stack } from '@fluentui/react';
 
-const Toast = forwardRef((props: any, ref) => {
-    const { status } = props
-    const { statusType } = props
-    const [visible, setVisible] = useState(false);
+interface IToast {
+  status: string;
+  statusType: MessageBarType;
+}
 
-    const showToast = () => {
-        setVisible(true);
-        setTimeout(() => {
-            setVisible(false);
-        }, 3000);
-    };
+const Toast = forwardRef(function ToastComponent({ status, statusType }: IToast, ref) {
+  const [visible, setVisible] = useState(false);
 
-    useImperativeHandle(ref, () => ({
-        showToast,
-    }));
+  const showToast = () => {
+    setVisible(true);
+    setTimeout(() => {
+      setVisible(false);
+    }, 3000);
+  };
 
-    return (
-        <Stack tokens={{ childrenGap: 10 }} style={{marginTop:20}}>
-            {/* <DefaultButton text="Show Toast" onClick={showToast} /> */}
-            {visible && (
-                <MessageBar
-                    messageBarType={statusType}
-                    isMultiline={false}
-                    onDismiss={() => setVisible(false)}
-                >
-                    {status}
-                </MessageBar>
-            )}
-        </Stack>
-    );
+  useImperativeHandle(ref, () => ({
+    showToast,
+  }));
+
+  return (
+    <Stack tokens={{ childrenGap: 10 }} style={{ marginTop: 20 }}>
+      {/* <DefaultButton text="Show Toast" onClick={showToast} /> */}
+      {visible && (
+        <MessageBar messageBarType={statusType} isMultiline={false} onDismiss={() => setVisible(false)}>
+          {status}
+        </MessageBar>
+      )}
+    </Stack>
+  );
 });
 
 export default Toast;

@@ -1,14 +1,14 @@
-import { UserData } from '../interfaces/user';
+import { useCallback } from 'react';
 import UserDataService, { defaultUserData } from '../services/user';
 import { useGlobalStore } from '../store';
 
 const userDataService = UserDataService.getInstance();
 
-export default function useUserData(){
-    const { updateUser  } = useGlobalStore()
-    const getUserData = async () => {
+export default function useUserData() {
+    const { updateUser, userData } = useGlobalStore()
+    const getUserData = useCallback(async () => {
         try {
-            const userData: UserData | null = await userDataService.getUser();
+            const userData = await userDataService.getUser();
             if (userData) {
                 updateUser(userData.id, userData);
             }
@@ -16,7 +16,7 @@ export default function useUserData(){
         } catch (error) {
             console.error("Error fetching user data:", error);
         }
-    };
+    }, [updateUser])
 
 
     const updateUserData = async () => {
@@ -31,6 +31,7 @@ export default function useUserData(){
     };
     return {
         getUserData,
-        updateUserData
+        updateUserData,
+        userData
     }
 }

@@ -2,7 +2,7 @@
 import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
-    test: {
-        environment: 'jsdom', // Ensure this is set
-    },
+  test: {
+    environment: 'jsdom', // Ensure this is set
+  },
 });

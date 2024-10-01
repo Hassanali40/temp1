@@ -2,7 +2,7 @@ import { UserData } from "../interfaces/user";
 import ApiClient from "./api";
 import { API_URLS } from '../constants/api'
 const { USER } = API_URLS;
-import { jsonUrlFile } from '../constants/mockData'
+import { getMockUserData } from '../constants/mockData'
 
 export const defaultUserData: UserData = Object.freeze({
     id: "",
@@ -31,20 +31,14 @@ export default class UserDataService {
 
     async getUser() {
         try {
-            const response = await fetch(jsonUrlFile);
-
-            if (!response.ok) {
-                throw new Error(`Error: ${response.statusText}`);
-            }
-
-            const data = await response.json();
-            return data;
-        } catch (error: any) {
-            console.log("Error fetching user information: ", error.message);
+            const response = await getMockUserData();
+            return response;
+        } catch (error) {
+            console.log("Error fetching user information: ", error);
             return null;
         }
 
-    // Use this placeholder when call the api endpoints
+        // Use this placeholder when call the api endpoints
 
         // return this.client
         //     .get<UserData>(USER)
@@ -56,20 +50,20 @@ export default class UserDataService {
         //         console.log("Error fetching user information: ", error.message);
         //         return null;
         //     });   
-}
+    }
 
-    async UpdateUser(params ?: UserData) {
-    return this.client
-        .post<UserData>(USER, { params })
-        .then(response => {
-            let data = { ...defaultUserData, ...response, wasLoaded: true };
-            return data;
-        })
-        .catch(error => {
-            /*appInsightsException(error);*/
-            console.log("Error creating a session: ", error.message);
-            return null;
-        });
-};
-    
+    async UpdateUser(params?: UserData) {
+        return this.client
+            .post<UserData>(USER, { params })
+            .then(response => {
+                const data = { ...defaultUserData, ...response, wasLoaded: true };
+                return data;
+            })
+            .catch(error => {
+                /*appInsightsException(error);*/
+                console.log("Error creating a session: ", error.message);
+                return null;
+            });
+    };
+
 }

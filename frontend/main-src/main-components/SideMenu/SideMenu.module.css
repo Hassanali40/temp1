@@ -1,283 +1,285 @@
 .sideMenu {
-    background-color: #FEF6EE;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    width: 285px;
-    height: 100%;
-    padding: 0 15px 0 0;
+  background-color: #fef6ee;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 285px;
+  height: 100%;
+  padding: 0 15px 0 0;
 }
 
 .sideMenu.open {
-    left: 0;
+  left: 0;
 }
 
 .HeaderContent {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .HeaderContentCenter {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 8px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
 }
 
 .HeaderTextMain {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 
 .HeaderTextSuper {
-    margin: 0;
-    padding: 0;
-    color: #E04F16;
-    font-family: Inter;
-    font-size: 27px;
-    font-style: normal;
-    font-weight: 800;
+  margin: 0;
+  padding: 0;
+  color: #e04f16;
+  font-family: Inter;
+  font-size: 27px;
+  font-style: normal;
+  font-weight: 800;
 }
 
 .HeaderTextCube {
-    margin: 0;
-    padding: 0;
-    color: #F3943D;
-    font-family: inter;
-    font-size: 27px;
-    font-style: normal;
-    font-weight: 800;
+  margin: 0;
+  padding: 0;
+  color: #f3943d;
+  font-family: inter;
+  font-size: 27px;
+  font-style: normal;
+  font-weight: 800;
 }
 
 .chatIcon {
-    height: 36px;
-    width: 36px;
-    border-radius: 10px;
+  height: 36px;
+  width: 36px;
+  border-radius: 10px;
 }
 
 .closeButton {
-    height: 28px;
-    width: 28px;
+  height: 28px;
+  width: 28px;
 }
 
 .newChatButton {
-    width: 100%;
-    height: 39px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 7px;
-    background-color: #D85836;
-    color: white;
-    margin-bottom: 20px;
-    cursor: pointer;
-    border-radius: 8px;
+  width: 100%;
+  height: 39px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 7px;
+  background-color: #d85836;
+  color: white;
+  margin-bottom: 20px;
+  cursor: pointer;
+  border-radius: 8px;
 }
 
 .newChatButton button {
-    background-color: #D85836;
-    color: white;
-    border: none;
-    font-size: 16px;
-    font-weight: 600;
+  background-color: #d85836;
+  color: white;
+  border: none;
+  font-size: 16px;
+  font-weight: 600;
 }
 
 .newChatEditIcon {
-    height: 22px;
-    width: 22px;
+  height: 22px;
+  width: 22px;
 }
 
 .menuContent {
-    margin-top: 20px;
+  margin-top: 20px;
 }
 
 .todaySection {
-    margin-bottom: 20px;
+  margin-bottom: 20px;
 }
 
 .sectionTitle {
-    color: #475467;
-    font-family: Inter;
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 700;
-    margin-bottom: 10px;
+  color: #475467;
+  font-family: Inter;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+  margin-bottom: 10px;
 }
 
 .ChatButtonItem {
-    width: 100%;
-    height: 36px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 7px;
-    background-color: #D85836;
-    color: white;
-    padding: 0 12px 0 2px;
-    margin-bottom: 20px;
-    cursor: pointer;
-    border-radius: 5px;
+  width: 100%;
+  height: 36px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 7px;
+  background-color: #d85836;
+  color: white;
+  padding: 0 12px 0 2px;
+  margin-bottom: 20px;
+  cursor: pointer;
+  border-radius: 5px;
 }
 
 .ChatButtonItem button {
-    background-color: #D85836;
-    color: white;
-    border: none;
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 400;
+  background-color: #d85836;
+  color: white;
+  border: none;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
 }
 
 .ChatButtonItemIcon {
-    height: 23px;
-    width: 23px;
+  height: 23px;
+  width: 23px;
 }
 
 .profileSection {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 20px;
-    padding: 10px;
-    background-color: transparent;
-    border-radius: 10px;
-    border: 1px solid var(--Colors-Border-border-primary, #D0D5DD);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+  padding: 10px;
+  background-color: transparent;
+  border-radius: 10px;
+  border: 1px solid var(--Colors-Border-border-primary, #d0d5dd);
 }
 
 .profileSectionImage {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 12px;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
 }
 
 .profileImage {
-    width: 45px;
-    height: 45px;
-    border-radius: 100%;
-    object-fit: cover;
+  width: 45px;
+  height: 45px;
+  border-radius: 100%;
+  object-fit: cover;
 }
 
 .profileName {
-    margin: 0;
-    color: #344054;
-    font-family: Inter;
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 600;
-    line-height: 20px;
+  margin: 0;
+  color: #344054;
+  font-family: Inter;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 20px;
 }
 
 .profileSubtitle {
-    margin: 0;
-    color: #344054;
-    font-family: Inter;
-    font-size: 12px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 18px;
+  margin: 0;
+  color: #344054;
+  font-family: Inter;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 18px;
 }
 
 .downIcon {
-    display: flex;
-    width: 24px;
-    height: 24px;
-    margin-left: auto;
+  display: flex;
+  width: 24px;
+  height: 24px;
+  margin-left: auto;
 }
 
-.bottomContent {}
+.bottomContent {
+}
 
 .profileOptions {
-    width: 100%;
+  width: 100%;
 }
 
 .profileOptionsContent {
-    margin-top: 10px;
-    height: 25px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
+  margin-top: 10px;
+  height: 25px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 .profileOptionsContent p {
-    margin: 0;
-    color: #344054;
-    font-family: Inter;
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 400;
+  margin: 0;
+  color: #344054;
+  font-family: Inter;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
 }
 
 .profileOptionsIcon {
-    height: 24px;
-    width: 24px;
+  height: 24px;
+  width: 24px;
 }
 
 .themeSwitcher {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
-    padding: 6px 6px;
-    border-radius: 6px;
-    background-color: #fdc6a4;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  padding: 6px 6px;
+  border-radius: 6px;
+  background-color: #fdc6a4;
 }
 
 .themeSwitcher button {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-
-    margin: 0 0px;
-    padding: 10px 10px;
-    cursor: pointer;
-    font-size: 16px;
-    border-radius: 5px;
-    border: none;
-    transition: background-color 0.3s ease, color 0.3s ease;
+  margin: 0 0px;
+  padding: 10px 10px;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 5px;
+  border: none;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
 }
 
 /* Default light button styles */
 .lightThemeButton {
-    background-color: #F4E7DE;
-    color: #333;
+  background-color: #f4e7de;
+  color: #333;
 }
 
 /* Default dark button styles */
 .darkThemeButton {
-    background-color: #fdc6a4;
-    color: #333;
+  background-color: #fdc6a4;
+  color: #333;
 }
 
 /* Active button style */
 .activeLight {
-    background-color: #fff;
-    color: #333;
+  background-color: #fff;
+  color: #333;
 }
 
 .active {
-    background-color: #333;
-    color: #fff;
+  background-color: #333;
+  color: #fff;
 }
 
 .buttonIneerStyle {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 }
 
 .buttonIcon {
-    height: 24px;
-    width: 24px;
-    margin-left: 6px;
+  height: 24px;
+  width: 24px;
+  margin-left: 6px;
 }
 
 .buttonIconMoon {
-    height: 20px;
-    width: 20px;
-    margin-left: 6px;
+  height: 20px;
+  width: 20px;
+  margin-left: 6px;
 }

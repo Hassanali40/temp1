@@ -1,13 +1,19 @@
-const defaultUserData = `{
-    "id": "",
-    "bannerMessage": "Bellevue Medical Centre",
-    "isAdmin": true,
-    "isPowerUser": true,
-    "showDataPoints": false,
-    "user": "trustedUser@vituity.com",
-    "name": "Bob Mayers"
-}`;
+import { UserData } from "../interfaces/user";
 
-const jsonBlob = new Blob([defaultUserData], { type: 'application/json' });
+export const defaultUserData = {
+    id: "",
+    bannerMessage: "Bellevue Medical Centre",
+    isAdmin: true,
+    isPowerUser: true,
+    showDataPoints: false,
+    user: "trustedUser@vituity.com",
+    name: "Bob Mayers",
+};
 
-export const jsonUrlFile = URL.createObjectURL(jsonBlob);
+export const getMockUserData = async (): Promise<UserData> => {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            resolve(defaultUserData);
+        }, 500);
+    });
+};

@@ -1,1 +1,1 @@
-export * from "./SideMenuSmall";
+export * from './SideMenuSmall';
