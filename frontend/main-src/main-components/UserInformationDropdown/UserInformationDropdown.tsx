@@ -55,10 +55,9 @@ const UserInformationDropdown: React.FC<ProfileDropdownProps> = ({ isDarkMode })
                         {UserDetails?.bannerMessage}
                     </p>
                 </div>
-                <button>
+                <button onClick={() => setIsOpenProfile(!isOpenProfile)}>
                     <img
                         src={isOpenProfile ? ChevronUp : ChevronDown}
-                        onClick={() => setIsOpenProfile(!isOpenProfile)}
                         className="h-[24px] w-[24px] ml-auto cursor-pointer"
                         aria-hidden="true"
                         alt="openprofile"
@@ -69,11 +68,10 @@ const UserInformationDropdown: React.FC<ProfileDropdownProps> = ({ isDarkMode })
             {isOpenProfile && (
                 <div className="w-full mt-3">
                     <div className="flex items-center gap-3 mt-2">
-                        <button>
+                        <button onClick={closeMenu}>
                             <img
                                 src={isDarkMode ? ClockRewind : ClockRewindWhite}
                                 className="h-[24px] w-[24px]"
-                                onClick={closeMenu}
                                 aria-hidden="true"
                                 alt="clonemenu"
                             />
@@ -81,11 +79,10 @@ const UserInformationDropdown: React.FC<ProfileDropdownProps> = ({ isDarkMode })
                         <p className="m-0 text-[#344054] text-[14px] dark:text-white">History</p>
                     </div>
                     <div className="flex items-center gap-3 mt-2">
-                        <button>
+                        <button onClick={closeMenu}>
                             <img
                                 src={isDarkMode ? Settings : SettingsWhite}
                                 className="h-[24px] w-[24px]"
-                                onClick={closeMenu}
                                 aria-hidden="true"
                                 alt="history"
                             />
@@ -93,11 +90,11 @@ const UserInformationDropdown: React.FC<ProfileDropdownProps> = ({ isDarkMode })
                         <p className="m-0 text-[#344054] text-[14px] dark:text-white">Settings</p>
                     </div>
                     <div className="flex items-center gap-3 mt-2">
-                        <button>
+
+                        <button onClick={closeMenu}>
                             <img
                                 src={isDarkMode ? Lightning : LightningWhite}
                                 className="h-[24px] w-[24px]"
-                                onClick={closeMenu}
                                 aria-hidden="true"
                                 alt="setting"
                             />
@@ -107,13 +104,14 @@ const UserInformationDropdown: React.FC<ProfileDropdownProps> = ({ isDarkMode })
                         </a>
                     </div>
                     <div className="flex items-center gap-3 mt-2">
-                        <img
-                            src={isDarkMode ? LogOut : LogOutWhite}
-                            className="h-[24px] w-[24px]"
-                            onClick={closeMenu}
-                            aria-hidden="true"
-                            alt="admin"
-                        />
+                        <button onClick={closeMenu}>
+                            <img
+                                src={isDarkMode ? LogOut : LogOutWhite}
+                                className="h-[24px] w-[24px]"
+                                aria-hidden="true"
+                                alt="admin"
+                            />
+                        </button>
                         <p className="m-0 text-[#344054] text-[14px] dark:text-white">Logout</p>
                     </div>
                 </div>
