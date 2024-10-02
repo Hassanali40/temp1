@@ -20,8 +20,6 @@ import { AppContextTheme } from '../../store/context/AppContext';
 import {
   SuperCubeLogo,
   StopWatch,
-  CirclePlus,
-  CirclePlusWhite,
   PodCast,
   UploadImageIcon,
   BarChart,
@@ -178,7 +176,7 @@ const Chat = () => {
   };
 
   const onFileAttachmentClick = () => {
-    console.log('onFileAttachmentClick');
+    console.log('onFileAttachmentClick ====>');
     questionFileInputRef.current?.triggerClick();
   };
 
@@ -224,6 +222,8 @@ const Chat = () => {
   const toggleDropdown = () => {
     setIsOpenOption(!isOpenOption);
   };
+
+
 
   return (
     <div className="flex flex-1 flex-col h-full bg-[#FEF6EE] dark:bg-[#1A202C]">
@@ -292,7 +292,7 @@ const Chat = () => {
                                 answer.role === 'assistant'
                                   ? answer.content
                                   : 'Sorry, an error occurred. Try refreshing the conversation or waiting a few minutes. If the issue persists, contact your system administrator. Error: ' +
-                                    answer.content,
+                                  answer.content,
                               citations:
                                 answer.role === 'assistant' ? parseCitationFromMessage(answers[index - 1]) : [],
                             }}
@@ -355,38 +355,30 @@ const Chat = () => {
                 {isOpenOption && (
                   <div className="origin-bottom-right absolute left-0  w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none transform -translate-y-full">
                     <div className="py-1">
-                      <a
+                      <button
+                        className="flex w-full items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
                         onClick={onFileAttachmentClick}
-                        href="#0"
-                        className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
                       >
                         <img src={UploadImageIcon} className="h-5 w-5 mr-3" alt="Upload button" />
                         Upload image
-                      </a>
-                      <a
+                      </button>
+                      <button
                         onClick={onFileAttachmentClick}
-                        href="#0"
-                        className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                        className="flex w-full items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
                       >
                         <img src={FileUploadIcon} className="h-5 w-5 mr-3" alt="Upload File" />
                         Upload file
-                      </a>
-                      <a
-                        href="#0"
-                        className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                      </button>
+                      <button
+                        className="flex w-full items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                      // onClick={/* Add appropriate onClick handler */}
                       >
                         <img src={Microsoft} className="h-5 w-5 mr-3" alt="Connect OneDrive" />
                         Connect OneDrive
-                      </a>
+                      </button>
                     </div>
                   </div>
                 )}
-                <button
-                  onClick={toggleDropdown}
-                  className="bg-transparent absolute w-[31px] h-[31px] z-10 top-[10px] left-[12px] circlePlusIcon"
-                >
-                  <img src={isDarkMode ? CirclePlus : CirclePlusWhite} alt="Microphone" />
-                </button>
                 <QuestionInput
                   clearOnSend
                   placeholder="Ask any question"
@@ -394,6 +386,7 @@ const Chat = () => {
                   onSend={(question, file) => makeApiRequest(question, file)}
                   recognizedText={recognizedText}
                   onMicrophoneClick={onMicrophoneClick}
+                  toggleDropdown={toggleDropdown}
                   onStopClick={stopSpeechRecognition}
                   isListening={isListening}
                   isRecognizing={isRecognizing}
@@ -401,9 +394,6 @@ const Chat = () => {
                   ref={questionFileInputRef}
                 />
               </div>
-              <p className="text-[#667085] text-center text-xs font-normal mt-2">
-                Please ensure to check generated information. SuperCube can make mistakes.
-              </p>
             </div>
           </div>
         </div>
