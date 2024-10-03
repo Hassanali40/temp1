@@ -1,6 +1,6 @@
 import { UserData } from '../interfaces/user';
 import ApiClient from './api';
-import { API_URLS } from './routes';
+import { API_URLS } from '../services';
 const { USER } = API_URLS;
 
 export default class UserDataService {

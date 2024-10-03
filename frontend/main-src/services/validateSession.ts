@@ -1,6 +1,6 @@
 import { IValidateSession } from '../interfaces/validate';
 import ApiClient from './api';
-import { API_URLS } from './routes';
+import { API_URLS } from '../services';
 
 export default class ValidateSessionService {
   private static instance: ValidateSessionService | null = null;

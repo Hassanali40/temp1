@@ -1,6 +1,6 @@
-import { describe, it, expect, afterEach, vi } from "vitest";
-import UserDataService from "../services/user";
-import { API_URLS } from "../services/routes";
+import { describe, it, expect, afterEach, vi } from 'vitest';
+import UserDataService from '../services/user';
+import { API_URLS } from '../services/routes';
 
 const { USER } = API_URLS;
 
@@ -9,29 +9,29 @@ const mockApiClient = {
   post: vi.fn(),
 };
 
-vi.mock("../services/api", () => ({
+vi.mock('../services/api', () => ({
   default: {
     getInstance: () => mockApiClient,
   },
 }));
 
 const mockUserData = {
-  id: "123",
-  bannerMessage: "Welcome User",
+  id: '123',
+  bannerMessage: 'Welcome User',
   isAdmin: true,
-  user: "test@vituity.com",
-  name: "Test User",
+  user: 'test@vituity.com',
+  name: 'Test User',
 };
 
-describe("UserDataService", () => {
+describe('UserDataService', () => {
   const userDataService = UserDataService.getInstance();
 
   afterEach(() => {
     vi.clearAllMocks();
   });
 
-  describe("getUser", () => {
-    it("should send a GET request and return user data", async () => {
+  describe('getUser', () => {
+    it('should send a GET request and return user data', async () => {
       const mockResponse = mockUserData;
       mockApiClient.get.mockResolvedValueOnce(mockResponse);
 
@@ -41,8 +41,8 @@ describe("UserDataService", () => {
       expect(response).toEqual(mockResponse);
     });
 
-    it("should handle errors gracefully", async () => {
-      mockApiClient.get.mockRejectedValueOnce(new Error("API Error"));
+    it('should handle errors gracefully', async () => {
+      mockApiClient.get.mockRejectedValueOnce(new Error('API Error'));
 
       const response = await userDataService.getUser();
 
@@ -50,8 +50,8 @@ describe("UserDataService", () => {
     });
   });
 
-  describe("updateUser", () => {
-    it("should send a POST request and return updated user data", async () => {
+  describe('updateUser', () => {
+    it('should send a POST request and return updated user data', async () => {
       const mockResponse = { ...mockUserData, wasLoaded: true };
       mockApiClient.post.mockResolvedValueOnce(mockResponse);
 
@@ -63,8 +63,8 @@ describe("UserDataService", () => {
       expect(response).toEqual(mockResponse);
     });
 
-    it("should handle errors gracefully on update", async () => {
-      mockApiClient.post.mockRejectedValueOnce(new Error("Update Error"));
+    it('should handle errors gracefully on update', async () => {
+      mockApiClient.post.mockRejectedValueOnce(new Error('Update Error'));
 
       const response = await userDataService.updateUser(mockUserData);
 

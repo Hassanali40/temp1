@@ -1,6 +1,6 @@
 import { AdminConfigResponse } from '../interfaces/adminConfig';
 import ApiClient from './api';
-import { API_URLS } from './routes';
+import { API_URLS } from '../services';
 const { ADMIN_CONFIG } = API_URLS;
 
 export const defaultAdminConfig: AdminConfigResponse = Object.freeze({
