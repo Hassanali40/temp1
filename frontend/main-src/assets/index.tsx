@@ -35,3 +35,5 @@ export { default as SunWhite } from './SunWhite.svg';
 export { default as SuperCubeLogo } from './SuperCubeLogo.svg';
 export { default as Upload } from './Upload.svg';
 export { default as UploadImageIcon } from './UploadImageIcon.svg';
+export { default as FileIcon } from './FileIcon.svg';
+export { default as CrossIcon } from './CrossIcon.svg';
