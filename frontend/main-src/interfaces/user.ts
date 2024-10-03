@@ -1,9 +1,7 @@
 export type UserData = {
-    id: string;
-    bannerMessage: string;
-    isAdmin: boolean;
-    isPowerUser: boolean;
-    showDataPoints: boolean;
-    user: string;
-    name: string;
+  id: string;
+  bannerMessage: string;
+  isAdmin: boolean;
+  user: string;
+  name: string;
 };

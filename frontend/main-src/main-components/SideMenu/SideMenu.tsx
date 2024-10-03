@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from 'react';
 import { AppContextTheme } from '../../store/context/AppContext';
-import UserInformationDropdown from "../UserInformationDropdown/UserInformationDropdown"
+import UserInformationDropdown from '../UserInformationDropdown/UserInformationDropdown';
 
 import {
   SuperCubeLogo,
