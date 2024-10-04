@@ -35,8 +35,6 @@ const Chat = () => {
     throw new Error('useContext must be used within an AppContextTheme.Provider');
   }
 
-  const { isDarkMode } = context;
-
   const lastQuestionRef = useRef<string>('');
   const chatMessageStreamEnd = useRef<HTMLDivElement | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);

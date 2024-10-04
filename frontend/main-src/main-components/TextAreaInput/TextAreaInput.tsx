@@ -15,6 +15,6 @@ const AutoResizeTextArea = ({ textareaRef, text, maxHeight = 0, minHeight, sessi
             textarea.style.height = `${newHeight}px`;
             textarea.scrollTop = textarea.scrollHeight;
         }
-    }, [text, textareaRef, maxHeight, sessionId]);
+    }, [text, textareaRef, maxHeight, sessionId, minHeight]);
 };
 export default AutoResizeTextArea;

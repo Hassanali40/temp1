@@ -3,11 +3,9 @@ import {
   ClockRewind,
   Settings,
   Lightning,
-  LogOut,
   ClockRewindWhite,
   SettingsWhite,
   LightningWhite,
-  LogOutWhite,
   ChevronDown,
   ChevronUp,
 } from '../../assets';
@@ -24,9 +22,6 @@ const UserInformationDropdown = memo(({ isDarkMode }: ProfileDropdownProps) => {
   const [UserDetails, setUserDetails] = useState<UserData>();
   const getUser = useGlobalStore((state) => state.getUser);
   const isBeenRendered = useRef<boolean>(false);
-
-  console.log('UserDetails', UserDetails);
-
 
   const closeMenu = () => {
     setIsOpenProfile(false);
