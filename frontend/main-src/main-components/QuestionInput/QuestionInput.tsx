@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useImperativeHandle, forwardRef, useContext } from 'react';
 import { AppContextTheme } from '../../store/context/AppContext';
 import { CirclePlus, CirclePlusWhite, FileIcon, MicrophoneIcon, MicrophoneIconBlue, SendBtn, SendBtnWhite } from '../../assets';
+import AutoResizeTextArea from '../TextAreaInput/TextAreaInput'
 
 interface Props {
   onSend: (question: string, file?: File) => void;
@@ -47,6 +48,11 @@ export const QuestionInput = forwardRef<{ triggerClick: () => void; clearFileInp
     const [fileName, setFileName] = useState<string>(''); // New state to store file name
     const [uploadProgress, setUploadProgress] = useState<number>(0);
 
+    const textareaRef = useRef<HTMLTextAreaElement>(null);
+    const [text, setText] = useState(question || liveRecognizedText || '');
+    const [textareaHeight, setTextareaHeight] = useState<number>(0);
+
+
 
     useEffect(() => {
       if (isRecognizing) {
@@ -60,7 +66,7 @@ export const QuestionInput = forwardRef<{ triggerClick: () => void; clearFileInp
       if (disabled || (!question.trim() && !liveRecognizedText.trim())) {
         return;
       }
-
+      setTextareaHeight(0)
       const textToSend = question || liveRecognizedText;
 
       onSend(textToSend, file);
@@ -69,7 +75,8 @@ export const QuestionInput = forwardRef<{ triggerClick: () => void; clearFileInp
         setQuestion('');
         setLiveRecognizedText('');
         setRecognizedText(''); // Clear recognizedText
-        // setFile(undefined)
+        setText(''); // Clear the text state
+        setFile(undefined)
       }
     };
 
@@ -123,24 +130,39 @@ export const QuestionInput = forwardRef<{ triggerClick: () => void; clearFileInp
 
     const _sendQuestionDisabled = disabled || !question.trim();
 
+    AutoResizeTextArea({
+      textareaRef,
+      text,
+      maxHeight: 500,
+      minHeight: 50,
+    });
+
+
+    useEffect(() => {
+      if (textareaRef.current) {
+        setTextareaHeight(textareaRef.current.offsetHeight - 50);
+        console.log('textareaRef.current.offsetHeight =======>', textareaRef.current.offsetHeight);
+      }
+    }, [text]);
+
     return (
       <div>
         <div className="relative w-full
-            border-2 border-[#D0D5DD] dark:placeholder-[#fff] dark:bg-[#1A202C] dark:text-white rounded-lg pl-[50px] focus:outline-none focus:border-[#E04F16] focus:ring-0 focus:ring-[#E04F16]-100
-      ">
+            border-2 border-[#D0D5DD] dark:placeholder-[#fff] dark:bg-[#1A202C] dark:text-white rounded-lg pl-[50px] focus:outline-none focus:border-[#E04F16] focus:ring-0 focus:ring-[#E04F16]-100">
           {/* File Input Field */}
           <input type="file" hidden onChange={handleFileChange} ref={fileInputRef} />
 
           <button
             onClick={toggleDropdown}
-            className={`bg-transparent absolute w-[31px] h-[31px] z-10 ${file ? 'top-[80px]' : 'top-[10px]'} left-[12px] circlePlusIcon`}
+            className="bg-transparent absolute w-[31px] h-[31px] z-10 left-[12px] circlePlusIcon"
+            style={{ top: `${file ? textareaHeight + 90 : textareaHeight + 14}px` }}
           >
             <img src={isDarkMode ? CirclePlus : CirclePlusWhite} alt="Microphone" />
           </button>
 
-          {/* Text Input Field */}
-          <input
-            type="text"
+          {/* textarea Field */}
+          <textarea
+            ref={textareaRef}
             placeholder={placeholder}
             value={question || liveRecognizedText}
             onChange={(e) => {
@@ -148,10 +170,12 @@ export const QuestionInput = forwardRef<{ triggerClick: () => void; clearFileInp
               if (newValue !== undefined) {
                 onQuestionChange(e, newValue);
                 setRecognizedText(newValue);
+                setText(newValue);
               }
             }}
             onKeyDown={onEnterPress}
-            className="w-full h-[50px] border-2 border-[transparent] dark:placeholder-[#fff] dark:bg-[#1A202C] dark:text-white rounded-lg  pr-[5%] focus:outline-none focus:border-[transparent] focus:ring-0 focus:ring-[transparent]-100"
+            className="w-full border-2 pt-4 border-[transparent] dark:placeholder-[#fff] dark:bg-[#1A202C] dark:text-white rounded-lg pr-[5%] focus:outline-none focus:border-[transparent] focus:ring-0 focus:ring-[transparent]-100"
+            style={{ minHeight: '50px', resize: 'none' }} // Optional: Ensure the initial height matches
           />
 
 
@@ -168,13 +192,15 @@ export const QuestionInput = forwardRef<{ triggerClick: () => void; clearFileInp
           >
             {microphoneIconActive ? (
               <img
-                className={`absolute w-[31px] h-[31px] z-10 ${file ? 'top-[80px]' : 'top-[10px]'} right-[12px] microphoneIcon`}
+                className={`absolute w-[31px] h-[31px] z-10 right-[12px] microphoneIcon`}
+                style={{ top: `${file ? textareaHeight + 90 : textareaHeight + 12}px` }}
                 src={MicrophoneIconBlue}
                 alt="Microphone"
               />
             ) : (
               <img
-                className={`absolute w-[31px] h-[31px] z-10 ${file ? 'top-[80px]' : 'top-[10px]'} right-[12px] microphoneIcon`}
+                className={`absolute w-[31px] h-[31px] z-10 right-[12px] microphoneIcon`}
+                style={{ top: `${file ? textareaHeight + 90 : textareaHeight + 12}px` }}
                 src={MicrophoneIcon}
                 alt="Microphone"
               />
@@ -191,13 +217,15 @@ export const QuestionInput = forwardRef<{ triggerClick: () => void; clearFileInp
           >
             {disabled ? (
               <img
-                className={`absolute w-[31px] h-[31px] z-10 ${file ? 'top-[80px]' : 'top-[10px]'} right-[-52px] sendBtnIcon`}
+                className={`absolute w-[31px] h-[31px] z-10 right-[-52px] sendBtnIcon`}
+                style={{ top: `${file ? textareaHeight + 95 : textareaHeight + 14}px` }}
                 src={isDarkMode ? SendBtn : SendBtnWhite}
                 alt="Microphone"
               />
             ) : (
               <img
-                className={`absolute w-[31px] h-[31px] z-10 ${file ? 'top-[80px]' : 'top-[10px]'} right-[-52px] sendBtnIcon`}
+                className={`absolute w-[31px] h-[31px] z-10 right-[-52px] sendBtnIcon`}
+                style={{ top: `${file ? textareaHeight + 95 : textareaHeight + 14}px` }}
                 src={isDarkMode ? SendBtn : SendBtnWhite}
                 alt="Microphone"
               />

@@ -35,6 +35,8 @@ const Chat = () => {
     throw new Error('useContext must be used within an AppContextTheme.Provider');
   }
 
+  const { isDarkMode } = context;
+
   const lastQuestionRef = useRef<string>('');
   const chatMessageStreamEnd = useRef<HTMLDivElement | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -49,6 +51,7 @@ const Chat = () => {
   const [recognizedText, setRecognizedText] = useState<string>('');
   const [isRecognizing, setIsRecognizing] = useState(false);
   const [isListening, setIsListening] = useState(false);
+  const [isOpenOption, setIsOpenOption] = useState<boolean>(false);
   const recognizerRef = useRef<SpeechRecognizer | null>(null);
   const questionFileInputRef = useRef<{ triggerClick: () => void; clearFileInput: () => void } | null>(null);
 
@@ -210,11 +213,6 @@ const Chat = () => {
     return [];
   };
 
-  // useEffect(() => {
-  //   document.documentElement.classList.add('dark');
-  // }, []);
-
-  const [isOpenOption, setIsOpenOption] = useState(false);
 
   // Toggle the dropdown
   const toggleDropdown = () => {
