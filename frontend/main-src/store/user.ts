@@ -1,10 +1,9 @@
 import { StateCreator } from 'zustand';
 import { UserData } from '../interfaces/user';
-import UserDataService from '../services/user';
 
-const userDataService = UserDataService.getInstance();
+type userPaylodStoreType = Omit<UserData, 'chatSessions' | 'activeSession'>;
 
-export const defaultUserData: UserData = {
+export const defaultUserData: userPaylodStoreType = {
   id: '',
   bannerMessage: '',
   isAdmin: false,
@@ -13,22 +12,12 @@ export const defaultUserData: UserData = {
 };
 
 export interface IUserStore {
-  userData: UserData;
+  userData: userPaylodStoreType;
   updateUser: (updates: Partial<Pick<UserData, keyof UserData>>) => void;
-  getUser: () => Promise<UserData | undefined>;
 }
 
 export const createUserStore: StateCreator<IUserStore> = (set) => ({
   userData: defaultUserData,
-  getUser: async () => {
-    const userData = await userDataService.getUser();
-    if (!userData) return;
-    set((state) => ({
-      ...state,
-      userData,
-    }));
-    return userData;
-  },
   updateUser: (updates: Partial<Pick<UserData, keyof UserData>>) => {
     set((state) => ({
       ...state,

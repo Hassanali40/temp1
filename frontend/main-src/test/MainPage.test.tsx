@@ -9,10 +9,10 @@ const mockContextValue = {
   setIsDarkMode: vi.fn(),
 };
 
-const renderComponent = (isOpen = true, closeMenu = vi.fn()) => {
+const renderComponent = (isOpen = true, toggleMenu = vi.fn()) => {
   render(
     <AppContextTheme.Provider value={mockContextValue}>
-      <SideMenu isOpen={isOpen} closeMenu={closeMenu} />
+      <SideMenu isOpen={isOpen} toggleMenu={toggleMenu} />
     </AppContextTheme.Provider>,
   );
 };
@@ -32,13 +32,13 @@ describe('SideMenu Component', () => {
   });
 
   it('calls closeMenu when the close button is clicked', () => {
-    const closeMenu = vi.fn();
-    renderComponent(true, closeMenu);
+    const toggleMenu = vi.fn();
+    renderComponent(true, toggleMenu);
 
     const closeButtons = screen.getAllByTestId('minimize-sidebar');
 
     fireEvent.click(closeButtons[closeButtons.length - 1]); // Click the last one, or adjust as needed
 
-    expect(closeMenu).toHaveBeenCalledTimes(1);
+    expect(toggleMenu).toHaveBeenCalledTimes(1);
   });
 });

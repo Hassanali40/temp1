@@ -3,7 +3,7 @@ export type Session = {
   name: string;
   created: number;
   updated: number;
-  qas?: QA[];
+  qas: QA[];
   error?: string;
   isLoading: boolean; // true if we're loading session/qa data from the DB
   wasLoaded: boolean; // true if we already tried to load the QA's
@@ -37,24 +37,25 @@ export type Question = {
 // basically the same as AskResponse
 export type Answer = {
   answer: string; //TODO: rename to text
-  thoughts: string | null;
-  edits: string | null;
-  data_points: string[];
-  procedures: string[];
+  thoughts?: string | null;
+  edits?: string | null;
+  data_points?: string[];
+  procedures?: string[];
   notes?: string;
   error?: string;
   agentsStatus?: AgentStatus[];
-  userRating: string | null;
-  feedbackText: string | undefined;
+  userRating?: string | null;
+  feedbackText?: string | undefined;
 };
 
 export type AgentStatus = {
   id: number;
   state: number;
   include_output: boolean;
+  identifier?: string;
   name: string;
   response: string;
-  error: string;
+  error: number;
   search_messages?: AgentMessage[];
   completion_messages?: AgentMessage[];
 };
@@ -63,4 +64,11 @@ export type AgentMessage = {
   role: string;
   name?: string;
   content: string;
+};
+
+export type ChatHistoryTurn = {
+  user: string;
+  bot?: string;
+  profile_id?: string;
+  agentsStatus?: AgentStatus[];
 };

@@ -1,0 +1,144 @@
+.chatEmptyState {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-top: 60px;
+  text-align: center;
+}
+
+.chatEmptyStateTitle {
+  font-size: 4rem;
+  font-weight: 600;
+  margin-top: 0;
+  margin-bottom: 30px;
+  padding: 0 3rem;
+}
+
+.chatEmptyStateSubtitle {
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.chatEmptyState svg {
+  max-width: 50dvh;
+}
+
+@media only screen and (max-height: 780px) {
+  .chatEmptyState {
+    padding-top: 0;
+  }
+
+  .chatEmptyStateTitle {
+    font-size: 3rem;
+    margin-bottom: 0px;
+  }
+}
+
+.chatMessageStream {
+  flex-grow: 1;
+  max-width: 1028px;
+  width: 100%;
+  padding-top: 2rem;
+  padding-left: 24px;
+  padding-right: 24px;
+  display: flex;
+  flex-direction: column;
+}
+
+.chatMessageGpt {
+  margin-bottom: 20px;
+  margin-left: 4px;
+  max-width: 90%;
+  display: flex;
+  min-width: 300px;
+}
+
+.chatMessageGptMinWidth {
+  max-width: 500px;
+  margin-bottom: 20px;
+}
+
+.chatAnalysisPanel {
+  flex: 1;
+  overflow-y: auto;
+  max-height: 94dvh;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.chatSettingsSeparator {
+  margin-top: 15px;
+}
+
+.loadingLogo {
+  font-size: 28px;
+}
+
+.commandsContainer {
+  display: flex;
+  align-self: flex-end;
+  margin-top: 10px;
+}
+
+.commandButton {
+  margin-right: 20px;
+  margin-bottom: 20px;
+}
+
+.chatContainer {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  position: relative;
+  align-items: center;
+  width: 100%;
+  overflow-y: auto;
+}
+
+.chatStream {
+  flex-grow: 1;
+  position: relative;
+  width: 100%;
+  max-width: 1000px;
+  padding: 1rem 24px 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.chatQA {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.commonRootTest {
+  background-color: var(--clr-logo);
+}
+
+.appVersion {
+  font-size: 0.75rem;
+  position: absolute;
+  bottom: 0.5rem;
+  right: 1.25rem;
+  color: #ccc;
+  z-index: 50;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 700px) {
+  .appVersion {
+    font-size: 0.6rem;
+    bottom: 0;
+    right: 1rem;
+  }
+}

@@ -6,6 +6,11 @@ const root = resolve(__dirname);
 
 export default defineConfig({
   plugins: [react()],
+  resolve: {
+    alias: {
+      '@': resolve(__dirname, './main-src'),
+    },
+  },
   build: {
     outDir: '../dist/static',
     emptyOutDir: true,
@@ -21,11 +26,6 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://127.0.0.1:5050',
-        changeOrigin: true,
-        secure: false,
-      },
-      '/upstream': {
         target: 'http://127.0.0.1:5050',
         changeOrigin: true,
         secure: false,

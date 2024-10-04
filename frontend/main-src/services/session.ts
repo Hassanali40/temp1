@@ -7,7 +7,7 @@ export const defaultSession: Session = Object.freeze({
   name: 'New Patient',
   created: 0,
   updated: 0,
-  qas: undefined,
+  qas: [],
   error: '',
   isLoading: false,
   wasLoaded: false,
