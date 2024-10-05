@@ -6,7 +6,16 @@ import { MainCard } from '../../main-components/MainCard';
 import { SuperCubeLogo, StopWatch, PodCast, BarChart, Upload } from '../../assets';
 import { QuestionBubble } from '../QuestionBubble';
 
-export default function Chat() {
+interface UserData {
+  name?: string;
+}
+
+interface ChatProps {
+  userData?: UserData; // Make userData optional
+}
+
+
+export default function Chat({ userData }: ChatProps) {
   // const { submitQuestion } = useSubmitQuestion();
   const { activeSession } = useGlobalStore();
   // const [selectedAnswer, setSelectedAnswer] = useState<number>(0);
@@ -86,7 +95,7 @@ export default function Chat() {
                   </div>
                   <div>
                     <h1 className="text-transparent bg-gradient-to-r from-[#7B6AE0] to-[#FFBB89] bg-clip-text text-4xl font-bold leading-none">
-                      Welcome, John.
+                      Welcome, {userData?.name ? userData?.name : 'John'}.
                     </h1>
                     <h2 className="text-[#E04F16] text-4xl font-bold	 leading-none mt-2">
                       What can we help you with today?

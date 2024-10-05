@@ -3,11 +3,9 @@ import {
   ClockRewind,
   Settings,
   Lightning,
-  LogOut,
   ClockRewindWhite,
   SettingsWhite,
   LightningWhite,
-  LogOutWhite,
   ChevronDown,
   ChevronUp,
 } from '../../assets';
@@ -39,12 +37,16 @@ const UserInformationDropdown = memo(({ isDarkMode }: ProfileDropdownProps) => {
   return (
     <div className="flex flex-col items-center p-2 bg-transparent rounded-lg border border-[#D0D5DD]">
       <div className="flex flex-row items-center gap-3 w-full">
-        <img
-          src="https://www.shutterstock.com/image-photo/happy-black-man-mature-portrait-260nw-2281799533.jpg"
-          // src={UserDetails?.image}
-          alt="Profile"
-          className="w-[45px] h-[45px] rounded-full object-cover"
-        />
+        <div className="w-[45px] h-[45px] rounded-full bg-[#D85836] flex items-center justify-center">
+          <span className="text-white font-bold">
+            {UserDetails?.name
+              ?.split(' ')
+              .map((word) => word[0])
+              .join('')
+              .substring(0, 2)
+              .toUpperCase()}
+          </span>
+        </div>
         <div>
           <p className="m-0 text-[#344054] text-[14px] font-semibold leading-5 dark:text-white">{UserDetails?.name}</p>
           <p className="m-0 text-[#344054] text-[12px] font-normal leading-[18px] dark:text-white">
@@ -85,30 +87,20 @@ const UserInformationDropdown = memo(({ isDarkMode }: ProfileDropdownProps) => {
             </button>
             <p className="m-0 text-[#344054] text-[14px] dark:text-white">Settings</p>
           </div>
-          <div className="flex items-center gap-3 mt-2">
-            <button onClick={closeMenu}>
-              <img
-                src={isDarkMode ? Lightning : LightningWhite}
-                className="h-[24px] w-[24px]"
-                aria-hidden="true"
-                alt="setting"
-              />
-            </button>
-            <a href="/admin">
-              <p className="m-0 text-[#344054] text-[14px] dark:text-white">Admin Panel</p>
-            </a>
-          </div>
-          <div className="flex items-center gap-3 mt-2">
-            <button onClick={closeMenu}>
-              <img
-                src={isDarkMode ? LogOut : LogOutWhite}
-                className="h-[24px] w-[24px]"
-                aria-hidden="true"
-                alt="admin"
-              />
-            </button>
-            <p className="m-0 text-[#344054] text-[14px] dark:text-white">Logout</p>
-          </div>
+          {UserDetails?.isAdmin &&
+            <div className="flex items-center gap-3 mt-2">
+              <button onClick={closeMenu}>
+                <img
+                  src={isDarkMode ? Lightning : LightningWhite}
+                  className="h-[24px] w-[24px]"
+                  aria-hidden="true"
+                  alt="setting"
+                />
+              </button>
+              <a href="/admin">
+                <p className="m-0 text-[#344054] text-[14px] dark:text-white">Admin Panel</p>
+              </a>
+            </div>}
         </div>
       )}
     </div>
