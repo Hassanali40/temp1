@@ -13,18 +13,17 @@
         "version": "detect"
       },
       "import/resolver": {
-        "node": {
-          "paths": [
-            "src"
+        "alias": {
+          "map": [
+            ["@", "./main-src"]
           ],
-          "extensions": [
-            ".js",
-            ".jsx",
-            ".ts",
-            ".tsx"
-          ]
+          "extensions": [".js", ".jsx", ".ts", ".tsx"]
+        },
+        "node": {
+          "extensions": [".js", ".jsx", ".ts", ".tsx"]
         }
-      }
+      },
+      "import/debug": true
     },
     "rules": {
       "no-unused-vars": "off",

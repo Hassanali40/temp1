@@ -1,27 +1,22 @@
 import React, { useRef, useState, useEffect, Fragment } from 'react';
 import { QA } from '../../interfaces/session';
 import { AnswerBubble } from '../AnswerBubble';
+import { UserData } from '../../interfaces/user';
 import { useGlobalStore } from '../../store';
 import { MainCard } from '../../main-components/MainCard';
 import { SuperCubeLogo, StopWatch, PodCast, BarChart, Upload } from '../../assets';
 import { QuestionBubble } from '../QuestionBubble';
 
-interface UserData {
-  name?: string;
-}
-
-interface ChatProps {
-  userData?: UserData; // Make userData optional
-}
-
-
-export default function Chat({ userData }: ChatProps) {
+export default function Chat() {
   // const { submitQuestion } = useSubmitQuestion();
   const { activeSession } = useGlobalStore();
   // const [selectedAnswer, setSelectedAnswer] = useState<number>(0);
 
   const [_abortController, setAbortController] = useState<AbortController | null>(null);
   const chatContainerRef = useRef<HTMLDivElement | null>(null);
+  const [UserDetails, setUserDetails] = useState<UserData>();
+  const getUser = useGlobalStore((state) => state.getUser);
+  const isBeenRendered = useRef<boolean>(false);
 
   /*  useEffect(() => {
         if (isInitialized && activeSession && activeSession.id) {
@@ -82,6 +77,13 @@ export default function Chat({ userData }: ChatProps) {
     );
   }
 
+  useEffect(() => {
+    if (!isBeenRendered.current) {
+      getUser().then((res) => setUserDetails(res));
+      isBeenRendered.current = true;
+    }
+  }, [getUser]);
+
   return (
     <Fragment>
       <div className="flex flex-1 flex-col relative items-center w-full overflow-y-auto" ref={chatContainerRef}>
@@ -95,7 +97,7 @@ export default function Chat({ userData }: ChatProps) {
                   </div>
                   <div>
                     <h1 className="text-transparent bg-gradient-to-r from-[#7B6AE0] to-[#FFBB89] bg-clip-text text-4xl font-bold leading-none">
-                      Welcome, {userData?.name ? userData?.name : 'John'}.
+                      Welcome,{UserDetails ? UserDetails?.name : "John"}.
                     </h1>
                     <h2 className="text-[#E04F16] text-4xl font-bold	 leading-none mt-2">
                       What can we help you with today?

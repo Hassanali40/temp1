@@ -10,7 +10,6 @@ import { UploadImageIcon, FileUploadIcon, Microsoft } from '../../assets';
 import { useSubmitQuestion } from '../../hooks';
 import useSession from '../../hooks/useSession';
 import { Session } from '../../interfaces/session';
-import { UserData } from '../../interfaces/user';
 import { useGlobalStore } from '../../store';
 
 export default function ChatWrapper() {
@@ -119,21 +118,11 @@ export default function ChatWrapper() {
   // }, []);
 
   const [isOpenOption, setIsOpenOption] = useState(false);
-  const [UserDetails, setUserDetails] = useState<UserData>();
-  const getUser = useGlobalStore((state) => state.getUser);
-  const isBeenRendered = useRef<boolean>(false);
 
   // Toggle the dropdown
   const toggleDropdown = () => {
     setIsOpenOption(!isOpenOption);
   };
-
-  useEffect(() => {
-    if (!isBeenRendered.current) {
-      getUser().then((res) => setUserDetails(res));
-      isBeenRendered.current = true;
-    }
-  }, [getUser]);
 
   return (
     <div className="flex w-full h-full bg-[#FEF6EE] dark:bg-[#1A202C] px-4 py-5">
@@ -141,9 +130,7 @@ export default function ChatWrapper() {
       <div className="flex flex-1 w-full min-h-full bg-[#fff] dark:bg-[#334054] dark:border dark:border-white rounded-lg overflow-auto flex-col">
         <div className="flex flex-1 w-full h-full bg-[#fff] dark:bg-[#334054] overflow-auto flex-col">
           <div className="flex flex-1 flex-col h-full bg-[#fff] dark:bg-[#344054]">
-            <ChatView
-              userData={UserDetails}
-            />
+            <ChatView />
           </div>
         </div>
 
@@ -201,8 +188,8 @@ export default function ChatWrapper() {
               onSend={handleSubmitQuestion}
               recognizedText={recognizedText}
               onMicrophoneClick={onMicrophoneClick}
-              toggleDropdown={toggleDropdown}
               onStopClick={stopSpeechRecognition}
+              toggleDropdown={toggleDropdown}
               isListening={isListening}
               isRecognizing={isRecognizing}
               setRecognizedText={setRecognizedText}

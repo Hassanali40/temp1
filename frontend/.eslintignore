@@ -1,3 +1,4 @@
 node_modules/
 dist/
 env.d.ts
+main-src/components/ui

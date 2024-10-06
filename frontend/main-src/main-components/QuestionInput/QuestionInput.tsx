@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useImperativeHandle, forwardRef, useContext } from 'react';
 import { AppContextTheme } from '../../store/context/AppContext';
 import { CirclePlus, CirclePlusWhite, FileIcon, MicrophoneIcon, MicrophoneIconBlue, SendBtn, SendBtnWhite } from '../../assets';
-import AutoResizeTextArea from '../../DesignSystem/TextAreaInput/TextAreaInput'
+import AutoResizeTextArea from '../TextAreaInput/TextAreaInput'
 
 interface Props {
   onSend: (question: string, file?: File) => void;
