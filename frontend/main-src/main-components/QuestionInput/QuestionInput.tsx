@@ -175,7 +175,8 @@ export const QuestionInput = forwardRef<{ triggerClick: () => void; clearFileInp
             }}
             onKeyDown={onEnterPress}
             className="w-full border-2 pt-4 border-[transparent] dark:placeholder-[#fff] dark:bg-[#1A202C] dark:text-white rounded-lg pr-[5%] focus:outline-none focus:border-[transparent] focus:ring-0 focus:ring-[transparent]-100"
-            style={{ minHeight: '50px', resize: 'none' }} // Optional: Ensure the initial height matches
+            style={{ minHeight: '50px', resize: 'none' }}
+            data-testid="question-textarea" 
           />
 
 

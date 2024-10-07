@@ -65,6 +65,13 @@ export default function Chat() {
     chatContainerRef.current.scrollTop = chatContainerRef.current?.scrollHeight;
   }, [activeSession?.isWaiting]);
 
+  useEffect(() => {
+    if (!isBeenRendered.current) {
+      getUser().then((res) => setUserDetails(res));
+      isBeenRendered.current = true;
+    }
+  }, [getUser]);
+
   if (activeSession?.isLoading) {
     return (
       <div className="flex flex-1 flex-col relative items-center w-full overflow-y-auto">
@@ -76,13 +83,6 @@ export default function Chat() {
       </div>
     );
   }
-
-  useEffect(() => {
-    if (!isBeenRendered.current) {
-      getUser().then((res) => setUserDetails(res));
-      isBeenRendered.current = true;
-    }
-  }, [getUser]);
 
   return (
     <Fragment>
