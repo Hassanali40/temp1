@@ -11,7 +11,7 @@ export const AppContextTheme = createContext<AppContextType | undefined>(undefin
 
 // Create a provider component
 export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(true);
 
   useEffect(() => {
     if (isDarkMode) {

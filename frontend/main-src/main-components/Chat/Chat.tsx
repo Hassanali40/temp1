@@ -86,12 +86,13 @@ export default function Chat() {
 
   return (
     <Fragment>
-      <div className="flex flex-1 flex-col relative items-center w-full overflow-y-auto" ref={chatContainerRef}>
-        <div className="flex-grow max-w-[1028px] w-full pt-8 px-6 pl-11 flex flex-col">
+      <div className="flex flex-1 flex-col relative items-center w-full overflow-y-auto " ref={chatContainerRef} >
+        <div className="flex-grow max-w-[1028px] w-full px-6 pl-11 flex flex-col md:pt-8 max-md:px-4">
           {(!qaCount && !isWorking) || !activeSession ? (
-            <div className="flex flex-1 px-6 py-5">
+            <div className="flex flex-1 px-6 py-5 max-md:py-0 max-md:px-0">
               <div className="flex flex-col flex-grow mx-auto w-[95%]">
-                <div className="flex flex-row items-center gap-5">
+
+                <div className="flex flex-row items-center gap-5 max-md:hidden ">
                   <div>
                     <img src={SuperCubeLogo} className="h-20 w-20" aria-hidden="true" alt="logo from supercube" />
                   </div>
@@ -105,9 +106,9 @@ export default function Chat() {
                   </div>
                 </div>
 
-                <div className="flex flex-col mt-12 gap-5">
+                <div className="flex flex-col mt-12 gap-5 max-md:mt-auto max-md:mb-12">
                   <h2 className="text-[#667085] font-semibold dark:text-white mt-12">Need expert help? Just Ask!</h2>
-                  <div className="flex flex-row gap-6">
+                  <div className="flex flex-row gap-6 md:flex-wrap max-md:overflow-x-auto scrollbar-hide">
                     <MainCard text="Analyze hourly ER arrival patterns for this week." imgSrc={StopWatch} />
                     <MainCard text="Suggest staffing adjustments for low-traffic periods." imgSrc={PodCast} />
                     <MainCard text="Identify trends in ER arrivals by hour and day of the week." imgSrc={BarChart} />

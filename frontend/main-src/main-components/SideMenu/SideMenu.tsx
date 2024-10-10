@@ -67,7 +67,7 @@ export default function SideMenu({ isOpen, toggleMenu }: SideMenuProps) {
   return (
     <>
       <div
-        className={`bg-[#FEF6EE] dark:bg-[#1A202C] flex flex-col ${isOpen ? 'w-[285px]' : 'w-[140px]'} max-h-[100dvh] pr-[15px] ${isOpen ? 'left-0' : ''}`}
+        className={`bg-[#FEF6EE] dark:bg-[#1A202C] flex flex-col h-full ${isOpen ? 'w-[285px]' : 'w-[140px]'} max-h-[100dvh] pr-[15px] ${isOpen ? 'left-0' : ''}`}
       >
         <div>
           <div className="flex flex-row justify-between items-center">

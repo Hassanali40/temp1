@@ -8,6 +8,8 @@ module.exports = {
       padding: '2rem',
       screens: {
         '2xl': '1400px',
+        'md': '768px',
+        'custom-800': '800px',
       },
     },
     extend: {
@@ -75,5 +77,8 @@ module.exports = {
       }),
     },
   },
-  plugins: [require('tailwindcss-animate')],
+  plugins: [
+    require('tailwindcss-animate'),
+    require('tailwind-scrollbar-hide')
+  ],
 };

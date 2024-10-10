@@ -5,6 +5,7 @@ import { multiLingualSpeechRecognizer } from '../../util/SpeechToText';
 import { QuestionInput } from '../../main-components/QuestionInput';
 import { ChatView } from '../../main-components/Chat';
 import SideMenu from '../../main-components/SideMenu/SideMenu';
+import MobileHeader from '../../main-components/MobileHeader/MobileHeader';
 import { AppContextTheme } from '../../store/context/AppContext';
 import { UploadImageIcon, FileUploadIcon, Microsoft } from '../../assets';
 import { useSubmitQuestion } from '../../hooks';
@@ -125,8 +126,14 @@ export default function ChatWrapper() {
   };
 
   return (
-    <div className="flex w-full h-full bg-[#FEF6EE] dark:bg-[#1A202C] px-4 py-5">
-      <SideMenu isOpen={isMenuOpen} toggleMenu={toggleMenu} />
+    <div className="md:flex w-full h-full bg-[#FEF6EE] dark:bg-[#1A202C] px-4 py-5">
+      <div className="md:hidden">
+        <MobileHeader isOpen={isMenuOpen} toggleMenu={toggleMenu} />
+      </div>
+      {/* Side Menu - Visible only on medium and larger screens */}
+      <div className="hidden md:block">
+        <SideMenu isOpen={isMenuOpen} toggleMenu={toggleMenu} />
+      </div>
       <div className="flex flex-1 w-full min-h-full bg-[#fff] dark:bg-[#334054] dark:border dark:border-white rounded-lg overflow-auto flex-col">
         <div className="flex flex-1 w-full h-full bg-[#fff] dark:bg-[#334054] overflow-auto flex-col">
           <div className="flex flex-1 flex-col h-full bg-[#fff] dark:bg-[#344054]">
@@ -134,7 +141,7 @@ export default function ChatWrapper() {
           </div>
         </div>
 
-        <div className="w-full pr-[62px] pb-5 flex flex-col justify-center items-center ">
+        <div className="w-full pr-[62px] max-md:pr-[40px] pb-5 flex flex-col justify-center items-center ">
           <div>
             {isRecognizing && !isListening && <p>Please wait...</p>} {isListening && <p>Listening...</p>}{' '}
           </div>

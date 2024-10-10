@@ -176,7 +176,7 @@ export const QuestionInput = forwardRef<{ triggerClick: () => void; clearFileInp
             onKeyDown={onEnterPress}
             className="w-full border-2 pt-4 border-[transparent] dark:placeholder-[#fff] dark:bg-[#1A202C] dark:text-white rounded-lg pr-[5%] focus:outline-none focus:border-[transparent] focus:ring-0 focus:ring-[transparent]-100"
             style={{ minHeight: '50px', resize: 'none' }}
-            data-testid="question-textarea" 
+            data-testid="question-textarea"
           />
 
 
@@ -190,6 +190,7 @@ export const QuestionInput = forwardRef<{ triggerClick: () => void; clearFileInp
             role="button"
             tabIndex={0}
             aria-label="Microphone button"
+            className={` ${file ? "max-md:hidden" : null} `}
           >
             {microphoneIconActive ? (
               <img
@@ -218,14 +219,14 @@ export const QuestionInput = forwardRef<{ triggerClick: () => void; clearFileInp
           >
             {disabled ? (
               <img
-                className={`absolute w-[31px] h-[31px] z-10 right-[-52px] sendBtnIcon`}
+                className={`absolute w-[31px] h-[31px] z-10 right-[-52px] sendBtnIcon max-md:right-[-42px]`}
                 style={{ top: `${file ? textareaHeight + 95 : textareaHeight + 14}px` }}
                 src={isDarkMode ? SendBtn : SendBtnWhite}
                 alt="Microphone"
               />
             ) : (
               <img
-                className={`absolute w-[31px] h-[31px] z-10 right-[-52px] sendBtnIcon`}
+                className={`absolute w-[31px] h-[31px] z-10 right-[-52px] sendBtnIcon max-md:right-[-42px]`}
                 style={{ top: `${file ? textareaHeight + 95 : textareaHeight + 14}px` }}
                 src={isDarkMode ? SendBtn : SendBtnWhite}
                 alt="Microphone"
