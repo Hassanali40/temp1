@@ -1,6 +1,9 @@
-import { Session } from '../interfaces/session';
 import ValidateSessionService from './validateSession';
 import ApiClient from './api';
+import { Session } from '../interfaces/session';
+import { API_URLS } from './routes';
+
+const { SESSION } = API_URLS;
 
 export const defaultSession: Session = Object.freeze({
   id: '-1',
@@ -38,7 +41,7 @@ export default class SessionService {
 
   async getSession(session_id: string) {
     return this.client
-      .get<Session>(`/api/session/${session_id}`)
+      .get<Session>(`${SESSION}/${session_id}`)
       .then((response) => {
         return response;
       })
@@ -52,7 +55,7 @@ export default class SessionService {
   async createSession(name?: string) {
     await ValidateSessionService.getInstance().validSessionCheck();
     return this.client
-      .post<Session>('/api/session', { name })
+      .post<Session>(SESSION, { name })
       .then((response) => {
         const data = { ...defaultSession, ...response, wasLoaded: true };
         return data;
@@ -66,7 +69,7 @@ export default class SessionService {
 
   async updateSession(session_id: string, name: string) {
     return this.client
-      .put<Session>(`/api/session/${session_id}`, { name })
+      .put<Session>(`${SESSION}/${session_id}`, { name })
       .then((response) => {
         return response;
       })
@@ -79,7 +82,7 @@ export default class SessionService {
 
   async deleteSession(session_id: string) {
     return this.client
-      .delete<boolean>(`/api/session/${session_id}`)
+      .delete<boolean>(`${SESSION}/${session_id}`)
       .then(() => {
         return true;
       })

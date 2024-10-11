@@ -1,25 +1,26 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import { AppContextTheme } from '../../store/context/AppContext';
-import UserInformationDropdown from '../UserInformationDropdown/UserInformationDropdown';
-import { Alert, Icon, MenuDropDown, Input } from '../../DesignSystem';
-import { Pencil, Trash } from 'lucide-react';
+// import UserInformationDropdown from '../UserInformationDropdown/UserInformationDropdown';
+import { Alert } from '../../DesignSystem';
+// import { Pencil, Trash } from 'lucide-react';
 import {
     SuperCubeLogo,
     EditWhiteIcon,
 } from '../../assets';
 import { useAlertDropDown, useSessions } from '../../hooks';
 
-import styles from './MobileHeader.module.css';
+// import styles from './MobileHeader.module.css';
 
 interface SideMenuProps {
     isOpen: boolean;
     toggleMenu: () => void;
 }
 
-export default function MobileHeader({ isOpen, toggleMenu }: SideMenuProps) {
-    const { createNewSession, sessions, activeSession, setActiveSession, deleteSession, updateSession } = useSessions();
-    const { dialogProps, setAlertData, isOpenDialog } = useAlertDropDown();
-    const [enableEditMode, setEnableEditMode] = useState<{ sessionIdToEdit: string; edition: string } | null>(null);
+export default function MobileHeader({ isOpen }: SideMenuProps) {
+    console.log(isOpen)
+    const { createNewSession, sessions } = useSessions();
+    const { dialogProps, isOpenDialog } = useAlertDropDown();
+    // const [enableEditMode, setEnableEditMode] = useState<{ sessionIdToEdit: string; edition: string } | null>(null);
     const context = useContext(AppContextTheme);
 
     console.log(sessions);
@@ -31,7 +32,7 @@ export default function MobileHeader({ isOpen, toggleMenu }: SideMenuProps) {
     return (
         <>
 
-            <div className="flex justify-between items-center pb-4">
+            <div className="flex justify-between items-center pt-4 px-4">
                 <img
                     src={SuperCubeLogo}
                     className="h-[36px] w-[36px] rounded-lg"

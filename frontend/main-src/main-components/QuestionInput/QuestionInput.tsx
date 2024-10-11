@@ -1,320 +1,360 @@
-import React, { useState, useEffect, useRef, useImperativeHandle, forwardRef, useContext } from 'react';
+import React, { useState, useRef, useImperativeHandle, forwardRef, useContext } from 'react';
 import { AppContextTheme } from '../../store/context/AppContext';
-import { CirclePlus, CirclePlusWhite, FileIcon, MicrophoneIcon, MicrophoneIconBlue, SendBtn, SendBtnWhite } from '../../assets';
-import AutoResizeTextArea from '../TextAreaInput/TextAreaInput'
+import File from '../File';
+import { Button, Icon, MenuDropDown, TextArea } from '../../DesignSystem';
+import { useSubmitQuestion } from '../../hooks';
+import useSession from '../../hooks/useSession';
+import { Session } from '../../interfaces/session';
+import { useGlobalStore } from '../../store';
+import * as speechSdk from 'microsoft-cognitiveservices-speech-sdk';
+import { SpeechService } from '../../services';
+import { FileUploadIcon } from '../../assets';
 
-interface Props {
-  onSend: (question: string, file?: File) => void;
-  onMicrophoneClick: () => void;
-  toggleDropdown: () => void;
-  onStopClick: () => void;
-  disabled: boolean;
-  placeholder?: string;
-  clearOnSend?: boolean;
-  recognizedText: string;
-  isListening: boolean;
-  isRecognizing: boolean;
-  setRecognizedText: (text: string) => void;
+const speechService = new SpeechService();
+
+interface IQuestionInputProps {
+  toggleDropDown: () => void;
 }
 
+const getSpeechLanguage = (language: string): string => {
+  const speechMap: { [key: string]: string } = {
+    en: 'en-US',
+    es: 'es-US',
+    ru: 'ru-RU',
+    pt: 'pt-PT',
+    ja: 'ja-JP',
+    it: 'it-IT',
+    de: 'de-DE',
+    fr: 'fr-FR',
+    nl: 'nl-NL',
+    zh: 'zh-CN',
+    vi: 'vi-VN',
+  };
+  return speechMap[language] ?? 'en-US';
+};
+
 // eslint-disable-next-line react/display-name
-export const QuestionInput = forwardRef<{ triggerClick: () => void; clearFileInput: () => void }, Props>(
-  (
-    {
-      onSend,
-      onMicrophoneClick,
-      toggleDropdown,
-      onStopClick,
-      disabled,
-      placeholder,
-      clearOnSend,
-      recognizedText,
-      isListening,
-      isRecognizing,
-      setRecognizedText,
-    },
-    ref,
-  ) => {
-    const context = useContext(AppContextTheme);
-    if (!context) {
-      throw new Error('useContext must be used within an AppContextTheme.Provider');
+export const QuestionInput = forwardRef<
+  {
+    triggerClick: () => void;
+  },
+  IQuestionInputProps
+>(({ toggleDropDown }, ref) => {
+  const context = useContext(AppContextTheme);
+  const { submitQuestion } = useSubmitQuestion();
+  const { createNewSession, activeSession } = useSession();
+  if (!context) {
+    throw new Error('useContext must be used within an AppContextTheme.Provider');
+  }
+  const { isDarkMode } = context;
+  const [question, setQuestion] = useState<string>('');
+  const [completedText, setCompletedText] = useState<string>('');
+  const [isListening, setIsListening] = useState(false);
+  const [file, setFile] = useState<File | null>(null);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const [recognizer, setRecognizer] = useState<speechSdk.SpeechRecognizer>();
+  const [micLoading, setMicLoading] = useState<boolean>(false);
+  const [wakelock, setWakelock] = useState<WakeLockSentinel | undefined>();
+  const [isDroppedEnabled, setIsDroppedEnabled] = useState(false);
+
+  const isSendQuestionDisabled = !question.trim();
+
+  const setupCognitiveServices = async (): Promise<speechSdk.SpeechRecognizer | undefined> => {
+    const resp = await speechService.getSpeechToken();
+    if (!resp) return;
+
+    const { token, region } = resp;
+
+    if (token) {
+      const endSilenceTimeoutMs = 3500;
+      const speechConfig = speechSdk.SpeechConfig.fromAuthorizationToken(token, region);
+      speechConfig.speechRecognitionLanguage = getSpeechLanguage('');
+      speechConfig.enableDictation();
+      speechConfig.setProfanity(speechSdk.ProfanityOption.Raw);
+      speechConfig.setProperty(
+        speechSdk.PropertyId.SpeechServiceConnection_EndSilenceTimeoutMs,
+        endSilenceTimeoutMs.toString(),
+      );
+
+      const audioConfig = speechSdk.AudioConfig.fromDefaultMicrophoneInput();
+      const recog = new speechSdk.SpeechRecognizer(speechConfig, audioConfig);
+      const conn = speechSdk.Connection.fromRecognizer(recog);
+      // Workaround for JS SDK bug
+      // https://stackoverflow.com/questions/73322254/how-to-change-azure-text-to-speech-silence-timeout-in-javascript
+      conn.setMessageProperty('speech.context', 'phraseDetection', {
+        INTERACTIVE: {
+          segmentation: {
+            mode: 'custom',
+            segmentationSilenceTimeoutMs: endSilenceTimeoutMs,
+          },
+        },
+        mode: 'Interactive',
+      });
+      setRecognizer(recog);
+      return recog;
     }
-    const { isDarkMode } = context;
-    const [question, setQuestion] = useState<string>('');
-    const [liveRecognizedText, setLiveRecognizedText] = useState<string>('');
-    const [microphoneIconActive, setMicrophoneIconActive] = useState<boolean>(false);
-    const [file, setFile] = useState<File>();
-    const fileInputRef = useRef<HTMLInputElement | null>(null);
-    const [fileName, setFileName] = useState<string>(''); // New state to store file name
-    const [uploadProgress, setUploadProgress] = useState<number>(0);
+    return recognizer;
+  };
 
-    const textareaRef = useRef<HTMLTextAreaElement>(null);
-    const [text, setText] = useState(question || liveRecognizedText || '');
-    const [textareaHeight, setTextareaHeight] = useState<number>(0);
+  if (recognizer) {
+    recognizer.recognizing = (_, recognitionEventArgs) => {
+      const result = recognitionEventArgs.result;
+      const recognizingText = result.text;
+      setQuestion(completedText + recognizingText + '...');
+    };
 
-
-
-    useEffect(() => {
-      if (isRecognizing) {
-        setLiveRecognizedText(recognizedText);
-        setMicrophoneIconActive(true); // Set microphone icon to active (blue)
-      } else {
-        setMicrophoneIconActive(false); // Set microphone icon to inactive
-      }
-    }, [recognizedText, isRecognizing]);
-    const sendQuestion = () => {
-      if (disabled || (!question.trim() && !liveRecognizedText.trim())) {
-        return;
-      }
-      setTextareaHeight(0)
-      const textToSend = question || liveRecognizedText;
-
-      onSend(textToSend, file);
-
-      if (clearOnSend) {
-        setQuestion('');
-        setLiveRecognizedText('');
-        setRecognizedText(''); // Clear recognizedText
-        setText(''); // Clear the text state
-        setFile(undefined)
+    // The 'recognized' event signals that a finalized recognition result has been received
+    recognizer.recognized = (_, recognitionEventArgs) => {
+      const result = recognitionEventArgs.result;
+      // console.log(`(recognized)  Reason: ${speechSdk.ResultReason[result.reason]}`);
+      switch (result.reason) {
+        case speechSdk.ResultReason.NoMatch:
+          speechSdk.NoMatchDetails.fromResult(result);
+          // console.log(`NoMatchReason: ${speechSdk.NoMatchReason[noMatchDetail.reason]}\r\n`);
+          break;
+        case speechSdk.ResultReason.Canceled:
+          speechSdk.CancellationDetails.fromResult(result);
+          // console.log(`CancellationReason: ${speechSdk.CancellationReason[cancelDetails.reason]}`);
+          // console.log(cancelDetails.reason === speechSdk.CancellationReason.Error ? `: ${cancelDetails.errorDetails}` : ``)\
+          break;
+        case speechSdk.ResultReason.RecognizedSpeech:
+          if (result.text && result.text.length > 0) {
+            const text = result.text;
+            const newText = completedText.trimEnd() + ' ' + text.trim();
+            setCompletedText(newText);
+            setQuestion(newText);
+          }
+          break;
       }
     };
 
-    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-      if (disabled || !event.target.files) {
-        return;
+    //The 'canceled' event signals that the service has stopped processing speech.
+    recognizer.canceled = (_, cancellationEventArgs) => {
+      window.console.log('(cancel) Reason: ' + speechSdk.CancellationReason[cancellationEventArgs.reason]);
+      if (cancellationEventArgs.reason === speechSdk.CancellationReason.Error) {
+        console.error(cancellationEventArgs.errorDetails);
       }
-      const selectedFile = event.target.files[0];
-      setFile(selectedFile);
-      setFileName(selectedFile.name);
-      toggleDropdown()
-      simulateUploadProgress();
     };
 
-    const simulateUploadProgress = () => {
-      let progress = 0;
-      const interval = setInterval(() => {
-        progress += 10;
-        if (progress >= 100) {
-          clearInterval(interval);
+    // The 'sessionStarted' event signals that audio has begun flowing and an interaction with the service has
+    // started.
+    recognizer.sessionStarted = (_, _sessionEventArgs) => {
+      setCompletedText(question);
+      // console.log(`(sessionStarted) SessionId: ${sessionEventArgs.sessionId}`);
+    };
+
+    // The 'sessionStopped' event signals that the current interaction with the speech service has ended and
+    // audio has stopped flowing.
+    recognizer.sessionStopped = (_, _sessionEventArgs) => {
+      // console.log(`(sessionStopped) SessionId: ${sessionEventArgs.sessionId}`);
+    };
+  }
+
+  const sendQuestion = async () => {
+    if (isSendQuestionDisabled) {
+      return;
+    }
+
+    if (activeSession == null) {
+      await createNewSession();
+    }
+
+    setQuestion('');
+    setFile(null);
+    await submitQuestion(
+      {
+        ...useGlobalStore.getState().activeSession,
+        inputText: question,
+      } as Session,
+      file,
+    );
+  };
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (!event.target.files) {
+      return;
+    }
+    setFile(event.target.files[0]);
+
+    event.target.value = '';
+  };
+
+  const onEnterPress = (ev: React.KeyboardEvent<Element>) => {
+    if (ev.key === 'Enter' && !ev.shiftKey) {
+      ev.preventDefault();
+      sendQuestion();
+    }
+  };
+
+  const onQuestionChange = (_ev: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, newValue?: string) => {
+    if (!newValue || newValue === '') {
+      setQuestion('');
+
+      return;
+    }
+    setQuestion(newValue);
+  };
+
+  useImperativeHandle(ref, () => ({
+    triggerClick: () => {
+      fileInputRef.current?.click();
+    },
+  }));
+
+  const clearFile = () => {
+    setFile(null);
+  };
+
+  const keepScreenOn = () => {
+    if ('wakeLock' in navigator) {
+      navigator.wakeLock.request('screen').then((sentinel: WakeLockSentinel) => setWakelock(sentinel));
+    }
+  };
+
+  const handleMsCognitiveService = async () => {
+    if (micLoading) return;
+
+    if (isListening) {
+      setIsListening(false);
+      recognizer?.stopContinuousRecognitionAsync();
+      await wakelock?.release().then(() => {
+        setWakelock(undefined);
+      });
+    } else {
+      keepScreenOn();
+      setMicLoading(true);
+      await setupCognitiveServices()
+        .then((recog) => {
+          if (recog) {
+            recog.startContinuousRecognitionAsync();
+            setIsListening(true);
+          }
+        })
+        .catch(() => {
+          setIsListening(false);
+        })
+        .finally(() => {
+          setMicLoading(false);
+        });
+    }
+  };
+
+  const handleOnDrop = (ev: React.DragEvent<HTMLDivElement>) => {
+    setIsDroppedEnabled(true);
+    ev.preventDefault();
+
+    const file = ev.dataTransfer.files[0];
+
+    if (!file) return;
+
+    setFile(file);
+    setIsDroppedEnabled(false);
+    /*
+    ----------> Logic to accept multiple files
+
+   if (ev.dataTransfer.items) {
+      // Use DataTransferItemList interface to access the file(s)
+      [...ev.dataTransfer.items].forEach((item, i) => {
+        // If dropped items aren't files, reject them
+        if (item.kind === "file") {
+          const file = item.getAsFile();
+          console.log(`… file[${i}].name = ${file?.name}`);
         }
-        setUploadProgress(progress);
-      }, 300); // Simulates progress update every 500ms
-    };
+      });
+    } else {
+      // Use DataTransfer interface to access the file(s)
+      [...ev.dataTransfer.files].forEach((file, i) => {
+        console.log(`… file[${i}].name = ${file.name}`);
+      });
+    } */
+  };
 
-    const onEnterPress = (ev: React.KeyboardEvent<Element>) => {
-      if (ev.key === 'Enter' && !ev.shiftKey) {
-        ev.preventDefault();
-        sendQuestion();
-      }
-    };
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    setIsDroppedEnabled(true);
+  };
 
-    const onQuestionChange = (_ev: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, newValue?: string) => {
-      setQuestion(newValue || '');
-      setLiveRecognizedText(newValue || ''); // Update liveRecognizedText when edited
-    };
+  const handleDragEnd = () => {
+    setIsDroppedEnabled(false);
+  };
 
-    useImperativeHandle(ref, () => ({
-      triggerClick: () => {
-        fileInputRef.current?.click();
-      },
-      clearFileInput: () => {
-        setFile(undefined);
-        setFileName('');
-        setUploadProgress(0);
-        if (fileInputRef.current) {
-          fileInputRef.current.value = '';
-        }
-      },
-    }));
+  return (
+    <div
+      className="flex w-full sm:px-5 pl-2 sm:gap-x-6 gap-x-2 items-end"
+      onDrop={handleOnDrop}
+      onDragOver={handleDragOver}
+      onDragEnd={handleDragEnd}
+      onDragLeave={handleDragEnd}
+    >
+      {/* File Input Field */}
+      <div
+        className={`flex-1 flex items-end border rounded-xl px-3 bg-background ${isDroppedEnabled && 'border-dashed border-2'}`}
+      >
+        <MenuDropDown
+          options={[
+            {
+              label: (
+                <>
+                  <img src={FileUploadIcon} className="h-5 w-5 mr-3" alt="Upload File" />
+                  Upload file
+                </>
+              ),
+              action: () => fileInputRef.current?.click(),
+            },
+          ]}
+          renderTrigger={() =>
+            !isDroppedEnabled && (
+              <Button variant="ghost" onClick={toggleDropDown} className="p-0 pb-3">
+                <Icon name={`${!isDarkMode ? 'circlePlusDark' : 'circlePlusWhite'}`} />
+              </Button>
+            )
+          }
+        />
 
-    const _sendQuestionDisabled = disabled || !question.trim();
+        <input type="file" hidden onChange={handleFileChange} ref={fileInputRef} />
 
-    AutoResizeTextArea({
-      textareaRef,
-      text,
-      maxHeight: window.innerWidth <= 768 ? 200 : 500,
-      minHeight: 50,
-    });
-
-
-    useEffect(() => {
-      if (textareaRef.current) {
-        setTextareaHeight(textareaRef.current.offsetHeight - 50);
-        console.log('textareaRef.current.offsetHeight =======>', textareaRef.current.offsetHeight);
-      }
-    }, [text]);
-
-    return (
-      <div>
-        <div className="relative w-full
-            border-2 border-[#D0D5DD] dark:placeholder-[#fff] dark:bg-[#1A202C] dark:text-white rounded-lg pl-[50px] max-md:pl-[30px] focus:outline-none focus:border-[#E04F16] focus:ring-0 focus:ring-[#E04F16]-100">
-          {/* File Input Field */}
-          <input type="file" hidden onChange={handleFileChange} ref={fileInputRef} />
-
-          <button
-            onClick={toggleDropdown}
-            className="bg-transparent absolute w-[31px] h-[31px] z-10 left-[12px] max-md:left-[5px] circlePlusIcon"
-            style={{ top: `${file ? textareaHeight + 90 : textareaHeight + 14}px` }}
-          >
-            <img src={isDarkMode ? CirclePlus : CirclePlusWhite} alt="Microphone" />
-          </button>
-
-          {/* textarea Field */}
-          <textarea
-            ref={textareaRef}
-            placeholder={placeholder}
-            value={question || liveRecognizedText}
-            onChange={(e) => {
-              const newValue = e.target.value;
-              if (newValue !== undefined) {
-                onQuestionChange(e, newValue);
-                setRecognizedText(newValue);
-                setText(newValue);
-              }
-            }}
+        <div className="w-full flex flex-col">
+          <TextArea
+            placeHolder={isDroppedEnabled ? 'Drop file here' : 'Ask any question'}
+            value={question}
+            // eslint-disable-next-line jsx-a11y/no-autofocus
+            autoFocus
+            onChange={(e) => onQuestionChange(e, e.target.value)}
             onKeyDown={onEnterPress}
-            className="w-full border-2 pt-4 border-[transparent] dark:placeholder-[#fff] dark:bg-[#1A202C] dark:text-white rounded-lg pr-[5%] focus:outline-none focus:border-[transparent] focus:ring-0 focus:ring-[transparent]-100"
-            style={{ minHeight: '50px', resize: 'none' }}
-            data-testid="question-textarea"
           />
 
-
-
-          {/* Microphone icon */}
-          <div
-            onClick={isListening ? onStopClick : onMicrophoneClick}
-            onKeyDown={(e) =>
-              e.key === 'Enter' || e.key === ' ' ? (isListening ? onStopClick() : onMicrophoneClick()) : null
-            }
-            role="button"
-            tabIndex={0}
-            aria-label="Microphone button"
-            className={` ${file ? "max-md:hidden" : null} `}
-          >
-            {microphoneIconActive ? (
-              <img
-                className={`absolute w-[31px] h-[31px] z-10 right-[12px] max-md:right-[5px] microphoneIcon`}
-                style={{ top: `${file ? textareaHeight + 90 : textareaHeight + 12}px` }}
-                src={MicrophoneIconBlue}
-                alt="Microphone"
-              />
-            ) : (
-              <img
-                className={`absolute w-[31px] h-[31px] z-10 right-[12px] max-md:right-[5px] microphoneIcon`}
-                style={{ top: `${file ? textareaHeight + 90 : textareaHeight + 12}px` }}
-                src={MicrophoneIcon}
-                alt="Microphone"
-              />
-            )}
-          </div>
-
-          {/* Send icon */}
-          <div
-            role="button"
-            tabIndex={0}
-            aria-label="Ask question button"
-            onClick={sendQuestion}
-            onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ' ? sendQuestion() : null)}
-          >
-            {disabled ? (
-              <img
-                className={`absolute w-[31px] h-[31px] z-10 right-[-52px] sendBtnIcon max-md:right-[-42px]`}
-                style={{ top: `${file ? textareaHeight + 95 : textareaHeight + 14}px` }}
-                src={isDarkMode ? SendBtn : SendBtnWhite}
-                alt="Microphone"
-              />
-            ) : (
-              <img
-                className={`absolute w-[31px] h-[31px] z-10 right-[-52px] sendBtnIcon max-md:right-[-42px]`}
-                style={{ top: `${file ? textareaHeight + 95 : textareaHeight + 14}px` }}
-                src={isDarkMode ? SendBtn : SendBtnWhite}
-                alt="Microphone"
-              />
-            )}
-          </div>
-
-          {/* worked on file  */}
           {file && (
-            <div className="relative flex w-[95%] items-center justify-between p-2 px-4	mb-4 border border-gray-200 rounded-lg shadow-sm">
-              {/* Close icon in the top-right corner */}
-              <button
-                onClick={() => setFile(undefined)} // This will clear the file, or any function that removes the file
-                className="absolute top-[-10px] right-[-10px] bg-black text-white rounded-full p-1 
-                hover:bg-gray-900 hover:text-gray-300 transition dark:bg-white
-                 dark:text-gray-500 dark:hover:bg-gray-100 dark:hover:text-black"
-                aria-label="Remove file"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  className="w-4 h-4"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
-              </button>
-
-              {/* File icon */}
-              <div className="flex w-[85%] items-center space-x-3">
-                <img
-                  src={FileIcon}
-                  className="h-[40px] w-[40px] rounded-lg"
-                  aria-hidden="true"
-                  alt="Logo from SuperCube"
-                />
-
-                {/* File name and size */}
-                <div>
-                  <p className="text-gray-900 font-medium text-base line-clamp-1 dark:text-white">{fileName}</p>
-                  <div className="flex items-center">
-                    <p className="text-gray-500 text-sm mr-2 dark:text-white">{(file.size / (1024 * 1024)).toFixed(2)} MB</p>
-                    <span className="text-gray-500 text-sm dark:text-white">- {uploadProgress}% uploaded</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Progress bar */}
-              <div className="flex items-center space-x-2 ">
-                {uploadProgress < 100 && (
-                  <svg
-                    className="animate-spin h-9 w-9 text-orange-500 dark:text-white"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                  >
-                    <circle
-                      className="opacity-25"
-                      cx="12"
-                      cy="12"
-                      r="10"
-                      stroke="currentColor"
-                      strokeWidth="4"
-                    ></circle>
-                    <path
-                      className="opacity-75"
-                      fill="currentColor"
-                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
-                    ></path>
-                  </svg>
-                )}
-              </div>
-            </div>
+            <File
+              name={file.name}
+              sizeInMB={`${file.size / 100}`}
+              clearFile={clearFile}
+              fileExtension={file.name.split('.')[1]}
+            />
           )}
         </div>
 
-        <p className="text-[#667085] text-center text-xs font-normal pt-2 pb-2">
-          Please ensure to check generated information. SuperCube can make mistakes.
-        </p>
-
+        {!isDroppedEnabled && (
+          <Button
+            isLoading={micLoading}
+            variant="ghost"
+            aria-label="Recording button"
+            onClick={handleMsCognitiveService}
+            className="p-0 pb-3"
+          >
+            {isListening ? <Icon name="pause" /> : <Icon name="mic" />}
+          </Button>
+        )}
       </div>
 
-    );
-  },
-);
+      <Button
+        variant="ghost"
+        aria-label="Ask question button"
+        onClick={sendQuestion}
+        disabled={isSendQuestionDisabled}
+        className="p-0 pb-5 "
+      >
+        <Icon name={`${isDarkMode ? 'sendDark' : 'sendLight'}`} />
+      </Button>
+    </div>
+  );
+});

@@ -30,15 +30,9 @@ export const defaultSession: Session = {
   currentRecordingTimer: 0,
 };
 
-const getActiveSession = (sessionId: string, get: () => ISessionStore): Session | null => {
-  const sessionsList = get().sessions;
-  const indexOfSession = sessionsList.findIndex((ele) => ele.id === sessionId);
-
-  if (indexOfSession < 0) {
-    return null;
-  }
-
-  return sessionsList[indexOfSession];
+const getActiveSession = (sessionId: string, sessions: Session[]): Session | null => {
+  const indexOfSession = sessions.findIndex((ele) => ele.id === sessionId);
+  return indexOfSession < 0 ? null : sessions[indexOfSession];
 };
 
 const updatedSession = (
@@ -50,11 +44,11 @@ const updatedSession = (
   return newSessions;
 };
 
-export const createSessionStore: StateCreator<ISessionStore> = (set, get) => ({
+export const createSessionStore: StateCreator<ISessionStore> = (set) => ({
   sessions: [],
   activeSession: null,
   setActiveSession: (sessionId: string) =>
-    set((state) => ({ ...state, activeSession: getActiveSession(sessionId, get) })),
+    set((state) => ({ ...state, activeSession: getActiveSession(sessionId, state.sessions) })),
   updateSessionsList: (sessions: Session[]) =>
     set((state) => {
       const newSessions = sessions.map((ele) => ({ ...defaultSession, ...ele }));

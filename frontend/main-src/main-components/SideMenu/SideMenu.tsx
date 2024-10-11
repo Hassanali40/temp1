@@ -29,9 +29,6 @@ export default function SideMenu({ isOpen, toggleMenu }: SideMenuProps) {
   const { dialogProps, setAlertData, isOpenDialog } = useAlertDropDown();
   const [enableEditMode, setEnableEditMode] = useState<{ sessionIdToEdit: string; edition: string } | null>(null);
   const context = useContext(AppContextTheme);
-  const isDarkModeOn = false;
-
-  console.log(sessions);
 
   if (!context) {
     throw new Error('useContext must be used within an AppContextTheme.Provider');
@@ -67,8 +64,7 @@ export default function SideMenu({ isOpen, toggleMenu }: SideMenuProps) {
   return (
     <>
       <div
-        className={`bg-[#FEF6EE] dark:bg-[#1A202C] flex flex-col h-full ${isOpen ? 'w-[285px]' : 'w-[140px]'} max-h-[100dvh] pr-[15px] ${isOpen ? 'left-0' : ''}`}
-      >
+  className={`bg-[#FEF6EE] dark:bg-[#1A202C] flex flex-col h-full ${isOpen ? 'w-[285px]' : 'w-[140px]'} max-h-[100dvh] pr-[15px] ${isOpen ? 'left-0' : ''}`}      >
         <div>
           <div className="flex flex-row justify-between items-center">
             {isOpen ? (
@@ -156,7 +152,7 @@ export default function SideMenu({ isOpen, toggleMenu }: SideMenuProps) {
                   className={`min-w-full flex justify-between items-center gap-2 outline-none px-1 py-1 rounded cursor-pointer ${activeSession?.id === id && 'bg-primary text-white'} dark:text-white`}
                   role="button"
                   tabIndex={0}
-                  onKeyDown={() => { }}
+                  onKeyDown={() => {}}
                 >
                   {name}
                   <MenuDropDown
@@ -200,7 +196,7 @@ export default function SideMenu({ isOpen, toggleMenu }: SideMenuProps) {
                 className={`outline-none mr-2 rounded py-1 cursor-pointer ${activeSession?.id === id && 'bg-primary text-white'} dark:text-white whitespace-nowrap text-ellipsis`}
                 role="button"
                 tabIndex={0}
-                onKeyDown={() => { }}
+                onKeyDown={() => {}}
               >
                 {name}
               </div>
@@ -209,7 +205,7 @@ export default function SideMenu({ isOpen, toggleMenu }: SideMenuProps) {
         </ul>
 
         <div className="mt-3">
-          <UserInformationDropdown isDarkMode={isDarkModeOn} />
+          <UserInformationDropdown isDarkMode={isDarkMode} />
 
           <div className="flex justify-between px-1 py-1 rounded-md bg-[#fdc6a4] dark:bg-[#521e27]">
             <button
