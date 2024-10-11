@@ -134,7 +134,7 @@ export default function ChatWrapper() {
       <div className="hidden md:block">
         <SideMenu isOpen={isMenuOpen} toggleMenu={toggleMenu} />
       </div>
-      <div className="flex flex-1 w-full min-h-full bg-[#fff] dark:bg-[#334054] dark:border dark:border-white rounded-lg overflow-auto flex-col">
+      <div className="flex flex-1 w-full min-h-full bg-[#fff] dark:bg-[#334054] dark:border dark:border-white rounded-lg overflow-auto flex-col max-md:scrollbar-hide">
         <div className="flex flex-1 w-full h-full bg-[#fff] dark:bg-[#334054] overflow-auto flex-col">
           <div className="flex flex-1 flex-col h-full bg-[#fff] dark:bg-[#344054]">
             <ChatView />
@@ -162,7 +162,7 @@ export default function ChatWrapper() {
 
           <div className="w-[95%] h-[51px] relative">
             {isOpenOption && (
-              <div className="origin-bottom-right absolute left-0  w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none transform -translate-y-full">
+              <div className="origin-bottom-right absolute left-0  w-56 max-md:w-full rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none transform -translate-y-full">
                 <div className="py-1">
                   <button
                     className="flex w-full items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"

@@ -133,7 +133,7 @@ export const QuestionInput = forwardRef<{ triggerClick: () => void; clearFileInp
     AutoResizeTextArea({
       textareaRef,
       text,
-      maxHeight: 500,
+      maxHeight: window.innerWidth <= 768 ? 200 : 500,
       minHeight: 50,
     });
 
@@ -148,13 +148,13 @@ export const QuestionInput = forwardRef<{ triggerClick: () => void; clearFileInp
     return (
       <div>
         <div className="relative w-full
-            border-2 border-[#D0D5DD] dark:placeholder-[#fff] dark:bg-[#1A202C] dark:text-white rounded-lg pl-[50px] focus:outline-none focus:border-[#E04F16] focus:ring-0 focus:ring-[#E04F16]-100">
+            border-2 border-[#D0D5DD] dark:placeholder-[#fff] dark:bg-[#1A202C] dark:text-white rounded-lg pl-[50px] max-md:pl-[30px] focus:outline-none focus:border-[#E04F16] focus:ring-0 focus:ring-[#E04F16]-100">
           {/* File Input Field */}
           <input type="file" hidden onChange={handleFileChange} ref={fileInputRef} />
 
           <button
             onClick={toggleDropdown}
-            className="bg-transparent absolute w-[31px] h-[31px] z-10 left-[12px] circlePlusIcon"
+            className="bg-transparent absolute w-[31px] h-[31px] z-10 left-[12px] max-md:left-[5px] circlePlusIcon"
             style={{ top: `${file ? textareaHeight + 90 : textareaHeight + 14}px` }}
           >
             <img src={isDarkMode ? CirclePlus : CirclePlusWhite} alt="Microphone" />
@@ -194,14 +194,14 @@ export const QuestionInput = forwardRef<{ triggerClick: () => void; clearFileInp
           >
             {microphoneIconActive ? (
               <img
-                className={`absolute w-[31px] h-[31px] z-10 right-[12px] microphoneIcon`}
+                className={`absolute w-[31px] h-[31px] z-10 right-[12px] max-md:right-[5px] microphoneIcon`}
                 style={{ top: `${file ? textareaHeight + 90 : textareaHeight + 12}px` }}
                 src={MicrophoneIconBlue}
                 alt="Microphone"
               />
             ) : (
               <img
-                className={`absolute w-[31px] h-[31px] z-10 right-[12px] microphoneIcon`}
+                className={`absolute w-[31px] h-[31px] z-10 right-[12px] max-md:right-[5px] microphoneIcon`}
                 style={{ top: `${file ? textareaHeight + 90 : textareaHeight + 12}px` }}
                 src={MicrophoneIcon}
                 alt="Microphone"
