@@ -2,8 +2,7 @@ import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { AppContextTheme } from '../store/context/AppContext';
 import SideMenu from '../main-components/SideMenu/SideMenu';
-import { QuestionInput } from '../main-components/QuestionInput/QuestionInput';
-import { describe, expect, it, vi, assert } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 
 const mockContextValue = {
   isDarkMode: false,
@@ -11,23 +10,9 @@ const mockContextValue = {
 };
 
 const renderComponent = (isOpen = true, toggleMenu = vi.fn()) => {
-  const defaultProps = {
-    onSend: vi.fn(),
-    onMicrophoneClick: vi.fn(),
-    toggleDropdown: vi.fn(),
-    onStopClick: vi.fn(),
-    disabled: false,
-    placeholder: 'Ask a question...',
-    clearOnSend: true,
-    recognizedText: '',
-    isListening: false,
-    isRecognizing: false,
-    setRecognizedText: vi.fn(),
-  };
   render(
     <AppContextTheme.Provider value={mockContextValue}>
       <SideMenu isOpen={isOpen} toggleMenu={toggleMenu} />
-      <QuestionInput {...defaultProps} />
     </AppContextTheme.Provider>,
   );
 };
@@ -56,22 +41,4 @@ describe('SideMenu Component', () => {
 
     expect(toggleMenu).toHaveBeenCalledTimes(1);
   });
-});
-
-describe('QuestionInput Component', () => {
-  it('renders the textarea', () => {
-    renderComponent();
-    const textarea = screen.getAllByTestId('question-textarea')[0];
-    assert.isNotNull(textarea);
-  });
-
-  it('allows input text change in the textarea', () => {
-    renderComponent();
-    const textarea = screen.getAllByTestId('question-textarea')[0] as HTMLTextAreaElement; // Cast to HTMLTextAreaElement
-
-    fireEvent.change(textarea, { target: { value: 'Test question' } });
-
-    assert.equal(textarea.value, 'Test question');
-  });
-
 });

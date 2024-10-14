@@ -43,7 +43,7 @@ export default function useSubmitPrompt() {
     return [...history, currentTurn];
   };
 
-  const submitQuestion = async (session: Session, _file?: File) => {
+  const submitQuestion = async (session: Session, file: File | null) => {
     const [promptId, text] = [session.inputPromptId, session.inputText];
     const seed = Math.floor(Math.random() * 65536);
     const question: Question = { promptId, text, seed };
@@ -57,7 +57,7 @@ export default function useSubmitPrompt() {
     try {
       // appInsightsEvent({ name: "Question Submitted", properties: { user, sessionId: session.id, profileId: promptId } });
       const request = buildProfileRequest(session, question, promptId, seed);
-      const message = await API.agentChatWithPollingStart(request);
+      const message = await API.agentChatWithPollingStart(request, file);
       if (!message) return;
       const taskId = message.task_id;
       session.taskId = taskId;
@@ -143,6 +143,12 @@ export default function useSubmitPrompt() {
       agentsStatus: [],
       taskId: '',
     });
+
+    try {
+      await API.agentChatWithPollingCancel(session.taskId);
+    } catch (_error) {
+      console.log('Error on cancel');
+    }
   };
 
   const scheduleQueryChartProgress = (session: Session) =>

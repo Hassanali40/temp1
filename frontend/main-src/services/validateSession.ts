@@ -32,9 +32,9 @@ export default class ValidateSessionService {
     const success = await this.getPing();
     if (!success) {
       /* let user = dataStore.get("user");
-        appInsightsEvent({ name: "Login timeout", properties: { user } }); */
+        appInsightsEvent({ name: "Login timeout", properties: { user } });
       console.log('reloading ', window.location.href);
-      window.location.reload();
+      window.location.reload();*/
     }
   }
 }

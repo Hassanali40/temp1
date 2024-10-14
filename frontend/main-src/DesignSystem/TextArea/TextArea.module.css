@@ -1,0 +1,28 @@
+.textAreaComponent {
+  font-family:
+    Segoe UI,
+    -apple-system,
+    BlinkMacSystemFont,
+    Roboto,
+    Oxygen,
+    Ubuntu,
+    Cantarell,
+    Fira Sans,
+    Droid Sans,
+    Helvetica Neue,
+    sans-serif;
+  overflow-y: overlay;
+  background-color: transparent;
+  border: none;
+  resize: none;
+  width: 100%;
+  margin: 0;
+  padding: 0 0.75rem;
+  padding-top: 0.75rem;
+  scrollbar-width: none;
+  outline: none;
+}
+
+.textAreaComponent::-webkit-scrollbar {
+  display: none; /* Safari and Chrome */
+}

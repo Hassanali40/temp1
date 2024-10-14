@@ -1,6 +1,9 @@
 import React, { useMemo, useRef } from 'react';
 import DOMPurify from 'dompurify';
 import { QA } from '../../interfaces/session';
+import supersub from 'remark-supersub';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 export interface IIndexable {
   [key: string]: boolean;
@@ -144,10 +147,13 @@ export default function AnswerBubble({ qa, isSelected, isLoading }: IAnswerBubbl
       className={`rounded-lg flex gap-3 min-w-full ${isSelected ? 'outline outline-2 outline-[#7376E1]' : ''}`}
     >
       <div>{AnswerIcon()}</div>
-      <div className="flex-grow">
-        <p className="text-sm text-[#344054] p-0 m-0 mb-4 whitespace-pre-line resize-y font-sans dark:text-white">
+      <div className="flex-grow mb-4">
+        <ReactMarkdown
+          remarkPlugins={[remarkGfm, supersub]}
+          className="text-sm leading-8 text-accent-foreground p-0 m-0 flex-none order-1 break-words"
+        >
           {sanitizedAnswerHtml}
-        </p>
+        </ReactMarkdown>
       </div>
     </div>
   );

@@ -41,7 +41,9 @@ describe('useSubmitPrompt', () => {
     mockAPIInstance = {
       agentChatWithPollingStart: vi.fn(),
       agentChatWithPollingStatus: vi.fn(),
+      agentChatWithPollingCancel: vi.fn(),
     };
+
     (QAsService.getInstance as vi.Mock).mockReturnValue(mockAPIInstance);
   });
 
@@ -162,6 +164,7 @@ describe('useSubmitPrompt', () => {
 
   it('HandleChartCancel should update session correctly', async () => {
     const { result } = renderHook(() => useSubmitPrompt());
+    mockAPIInstance.agentChatWithPollingCancel.mockResolvedValue('1234');
 
     await act(async () => {
       await result.current.HandleChartCancel(session);
