@@ -31,7 +31,7 @@ export default function ChatWrapper() {
   return (
     <div className="md:flex w-full h-full bg-[#FEF6EE] dark:bg-[#1A202C] px-4 py-5">
       <div className="md:hidden">
-        <MobileHeader isOpen={isMenuOpen} toggleMenu={toggleMenu} />
+        <MobileHeader />
       </div>
       {/* <SideMenu isOpen={isMenuOpen} toggleMenu={toggleMenu} /> */}
       <div className="hidden md:block">
