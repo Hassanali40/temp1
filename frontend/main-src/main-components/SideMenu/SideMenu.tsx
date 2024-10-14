@@ -64,7 +64,7 @@ export default function SideMenu({ isOpen, toggleMenu }: SideMenuProps) {
   return (
     <>
       <div
-        className={`bg-[#FEF6EE] dark:bg-[#1A202C] flex flex-col ${isOpen ? 'w-[285px]' : 'w-[140px]'} max-h-[100dvh] pr-[15px] ${isOpen ? 'left-0' : ''}`}
+        className={`bg-[#FEF6EE] dark:bg-[#1A202C] flex flex-col h-full ${isOpen ? 'w-[285px]' : 'w-[140px]'} max-h-[100dvh] pr-[15px] ${isOpen ? 'left-0' : ''}`}
       >
         <div>
           <div className="flex flex-row justify-between items-center">
@@ -153,7 +153,7 @@ export default function SideMenu({ isOpen, toggleMenu }: SideMenuProps) {
                   className={`min-w-full flex justify-between items-center gap-2 outline-none px-1 py-1 rounded cursor-pointer ${activeSession?.id === id && 'bg-primary text-white'} dark:text-white`}
                   role="button"
                   tabIndex={0}
-                  onKeyDown={() => {}}
+                  onKeyDown={() => { }}
                 >
                   {name}
                   <MenuDropDown
@@ -197,7 +197,7 @@ export default function SideMenu({ isOpen, toggleMenu }: SideMenuProps) {
                 className={`outline-none mr-2 rounded py-1 cursor-pointer ${activeSession?.id === id && 'bg-primary text-white'} dark:text-white whitespace-nowrap text-ellipsis`}
                 role="button"
                 tabIndex={0}
-                onKeyDown={() => {}}
+                onKeyDown={() => { }}
               >
                 {name}
               </div>

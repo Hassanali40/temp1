@@ -82,7 +82,7 @@ export default function File({ name, clearFile, sizeInMB, fileExtension }: IFile
         )}
       </div>
       <div className="text-left flex flex-col">
-        <span className="text-sm text-ellipsis text-accent-foreground">{name}</span>
+        <span className="text-sm text-ellipsis text-accent-foreground line-clamp-1">{name}</span>
         {sizeInMB && <span className="text-sm text-muted-foreground dark:text-slate-400">{sizeInMB} MB</span>}
       </div>
 

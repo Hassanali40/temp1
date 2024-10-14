@@ -2,6 +2,7 @@ import { useRef, useState, useContext } from 'react';
 import { QuestionInput } from '../../main-components/QuestionInput';
 import { ChatView } from '../../main-components/Chat';
 import SideMenu from '../../main-components/SideMenu/SideMenu';
+import MobileHeader from '../../main-components/MobileHeader/MobileHeader';
 import { AppContextTheme } from '../../store/context/AppContext';
 
 export default function ChatWrapper() {
@@ -28,9 +29,15 @@ export default function ChatWrapper() {
   };
 
   return (
-    <div className="flex w-full h-full bg-[#FEF6EE] dark:bg-[#1A202C] px-4 py-5">
-      <SideMenu isOpen={isMenuOpen} toggleMenu={toggleMenu} />
-      <div className="flex flex-1 w-full min-h-full bg-[#fff] dark:bg-[#334054] dark:border dark:border-white rounded-lg overflow-auto flex-col">
+    <div className="md:flex w-full h-full bg-[#FEF6EE] dark:bg-[#1A202C] px-4 py-5">
+      <div className="md:hidden">
+        <MobileHeader isOpen={isMenuOpen} toggleMenu={toggleMenu} />
+      </div>
+      {/* <SideMenu isOpen={isMenuOpen} toggleMenu={toggleMenu} /> */}
+      <div className="hidden md:block">
+        <SideMenu isOpen={isMenuOpen} toggleMenu={toggleMenu} />
+      </div>
+      <div className="flex flex-1 w-full min-h-full bg-[#fff] dark:bg-[#334054] dark:border dark:border-white rounded-lg overflow-auto flex-col max-md:scrollbar-hide">
         <div className="flex flex-1 w-full h-full bg-[#fff] dark:bg-[#334054] overflow-auto flex-col">
           <div className="flex flex-1 flex-col h-full bg-[#fff] dark:bg-[#344054]">
             <ChatView />

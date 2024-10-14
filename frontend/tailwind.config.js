@@ -9,7 +9,6 @@ module.exports = {
       screens: {
         '2xl': '1400px',
         'md': '768px',
-        'custom-800': '800px',
       },
     },
     extend: {
@@ -79,6 +78,5 @@ module.exports = {
   },
   plugins: [
     require('tailwindcss-animate'),
-    require('tailwind-scrollbar-hide')
   ],
 };
