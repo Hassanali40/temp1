@@ -44,12 +44,24 @@ const UserInformationDropdown = memo(({ isDarkMode }: ProfileDropdownProps) => {
   return (
     <div className="flex flex-col items-center p-2 bg-transparent rounded-lg border border-[#D0D5DD]">
       <div className="flex flex-row items-center gap-3 w-full">
-        <img
-          src={profilePicture}
-          // src={UserDetails?.image}
-          alt="Profile"
-          className="w-[45px] h-[45px] rounded-full object-cover"
-        />
+        {profilePicture ?
+          <img
+            src={profilePicture}
+            // src={UserDetails?.image}
+            alt="Profile"
+            className="w-[45px] h-[45px] rounded-full object-cover"
+          /> :
+          <div className="w-[45px] h-[45px] rounded-full bg-[#D85836] flex items-center justify-center">
+            <span className="text-white font-bold">
+              {UserDetails?.name
+                ?.split(' ')
+                .map((word) => word[0])
+                .join('')
+                .substring(0, 2)
+                .toUpperCase()}
+            </span>
+          </div>
+        }
         <div>
           <p className="m-0 text-[#344054] text-[14px] font-semibold leading-5 dark:text-white">
             {formatUserName(UserDetails?.name || 'friend')}
