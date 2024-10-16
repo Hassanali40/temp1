@@ -51,6 +51,15 @@ const UserInformationDropdown = memo(({ isDarkMode }: ProfileDropdownProps) => {
             alt="Profile"
             className="w-[45px] h-[45px] rounded-full object-cover"
           /> :
+          // use this placeholder for the user image
+          // {UserDetails?.image ?
+          // <img
+          //   src={profilePicture}
+          //   // src={UserDetails?.image}
+          //   alt="Profile"
+          //   className="w-[45px] h-[45px] rounded-full object-cover"
+          // />
+          // : 
           <div className="w-[45px] h-[45px] rounded-full bg-[#D85836] flex items-center justify-center">
             <span className="text-white font-bold">
               {UserDetails?.name
@@ -80,57 +89,59 @@ const UserInformationDropdown = memo(({ isDarkMode }: ProfileDropdownProps) => {
         </button>
       </div>
 
-      {isOpenProfile && (
-        <div className="w-full mt-3">
-          <div className="flex items-center gap-3 mt-2">
-            <button onClick={closeMenu}>
-              <img
-                src={isDarkMode ? ClockRewind : ClockRewindWhite}
-                className="h-[24px] w-[24px]"
-                aria-hidden="true"
-                alt="clonemenu"
-              />
-            </button>
-            <p className="m-0 text-[#344054] text-[14px] dark:text-white">History</p>
+      {
+        isOpenProfile && (
+          <div className="w-full mt-3">
+            <div className="flex items-center gap-3 mt-2">
+              <button onClick={closeMenu}>
+                <img
+                  src={isDarkMode ? ClockRewind : ClockRewindWhite}
+                  className="h-[24px] w-[24px]"
+                  aria-hidden="true"
+                  alt="clonemenu"
+                />
+              </button>
+              <p className="m-0 text-[#344054] text-[14px] dark:text-white">History</p>
+            </div>
+            <div className="flex items-center gap-3 mt-2">
+              <button onClick={closeMenu}>
+                <img
+                  src={isDarkMode ? Settings : SettingsWhite}
+                  className="h-[24px] w-[24px]"
+                  aria-hidden="true"
+                  alt="history"
+                />
+              </button>
+              <p className="m-0 text-[#344054] text-[14px] dark:text-white">Settings</p>
+            </div>
+            <div className="flex items-center gap-3 mt-2">
+              <button onClick={closeMenu}>
+                <img
+                  src={isDarkMode ? Lightning : LightningWhite}
+                  className="h-[24px] w-[24px]"
+                  aria-hidden="true"
+                  alt="setting"
+                />
+              </button>
+              <a href="/admin">
+                <p className="m-0 text-[#344054] text-[14px] dark:text-white">Admin Panel</p>
+              </a>
+            </div>
+            <div className="flex items-center gap-3 mt-2">
+              <button onClick={closeMenu}>
+                <img
+                  src={isDarkMode ? LogOut : LogOutWhite}
+                  className="h-[24px] w-[24px]"
+                  aria-hidden="true"
+                  alt="admin"
+                />
+              </button>
+              <p className="m-0 text-[#344054] text-[14px] dark:text-white">Logout</p>
+            </div>
           </div>
-          <div className="flex items-center gap-3 mt-2">
-            <button onClick={closeMenu}>
-              <img
-                src={isDarkMode ? Settings : SettingsWhite}
-                className="h-[24px] w-[24px]"
-                aria-hidden="true"
-                alt="history"
-              />
-            </button>
-            <p className="m-0 text-[#344054] text-[14px] dark:text-white">Settings</p>
-          </div>
-          <div className="flex items-center gap-3 mt-2">
-            <button onClick={closeMenu}>
-              <img
-                src={isDarkMode ? Lightning : LightningWhite}
-                className="h-[24px] w-[24px]"
-                aria-hidden="true"
-                alt="setting"
-              />
-            </button>
-            <a href="/admin">
-              <p className="m-0 text-[#344054] text-[14px] dark:text-white">Admin Panel</p>
-            </a>
-          </div>
-          <div className="flex items-center gap-3 mt-2">
-            <button onClick={closeMenu}>
-              <img
-                src={isDarkMode ? LogOut : LogOutWhite}
-                className="h-[24px] w-[24px]"
-                aria-hidden="true"
-                alt="admin"
-              />
-            </button>
-            <p className="m-0 text-[#344054] text-[14px] dark:text-white">Logout</p>
-          </div>
-        </div>
-      )}
-    </div>
+        )
+      }
+    </div >
   );
 });
 
