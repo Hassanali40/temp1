@@ -9,6 +9,8 @@ import { useSessions, useSubmitQuestion } from '../../hooks';
 import { SquareRegular } from '@fluentui/react-icons';
 import { Button } from '../../DesignSystem';
 import { formatUserName } from '../../util';
+import styles from './Chat.module.css';
+
 
 export default function Chat() {
   const { userData, activeSession } = useGlobalStore();
@@ -81,15 +83,12 @@ export default function Chat() {
 
                 <div className="flex flex-col mt-12 gap-5 max-md:mt-auto max-md:mb-12">
                   <h2 className="text-[#667085] font-semibold dark:text-white mt-12">Need expert help? Just Ask!</h2>
-                  <div className="flex flex-row gap-6 md:flex-wrap max-md:overflow-x-auto scrollbar-hide">
+                  <div className={`flex flex-row gap-6 md:flex-wrap max-md:overflow-x-auto ${styles.scrollbarHide}`}>
                     <MainCard text="Analyze hourly ER arrival patterns for this week." imgSrc={StopWatch} />
                     <MainCard text="Suggest staffing adjustments for low-traffic periods." imgSrc={PodCast} />
                     <MainCard text="Identify trends in ER arrivals by hour and day of the week." imgSrc={BarChart} />
                     <MainCard text="Analyze hourly ER arrival patterns for this week." imgSrc={StopWatch} />
-                    <MainCard
-                      text="Use this raw data from the last 12 months of our throughput metrics."
-                      imgSrc={Upload}
-                    />
+                    <MainCard text="Use this raw data from the last 12 months of our throughput metrics." imgSrc={Upload} />
                   </div>
                 </div>
               </div>
