@@ -42,21 +42,20 @@ const UserInformationDropdown = memo(({ isDarkMode }: ProfileDropdownProps) => {
   const jeffImage = 'https://www.shutterstock.com/image-photo/happy-black-man-mature-portrait-260nw-2281799533.jpg';
   const joeImage = 'https://img.freepik.com/free-photo/portrait-young-girl-smiling_23-2149260597.jpg?semt=ais_hybrid';
 
-  const getUserImage = (name) => {
+  const getUserImage = (name: string | undefined) => {
     switch (name) {
-      case 'melidan':
+      case 'Melidan':
         return melidanImage;
-      case 'jeff':
+      case 'Jeff':
         return jeffImage;
-      case 'joe':
+      case 'Joe':
         return joeImage;
       default:
         return null;
     }
   }
 
-  // const userName = UserDetails?.name;
-  const userName = 'joe';
+  const userName = UserDetails?.name;
   const userImage = getUserImage(userName);
 
   return (
