@@ -38,28 +38,37 @@ const UserInformationDropdown = memo(({ isDarkMode }: ProfileDropdownProps) => {
     }
   }, [getUser]);
 
-  const profilePicture =
-    'https://www.shutterstock.com/image-photo/happy-black-man-mature-portrait-260nw-2281799533.jpg';
+  const melidanImage = 'https://img.freepik.com/free-photo/portrait-man-laughing_23-2148859448.jpg?size=338&ext=jpg';
+  const jeffImage = 'https://www.shutterstock.com/image-photo/happy-black-man-mature-portrait-260nw-2281799533.jpg';
+  const joeImage = 'https://img.freepik.com/free-photo/portrait-young-girl-smiling_23-2149260597.jpg?semt=ais_hybrid';
+
+  const getUserImage = (name) => {
+    switch (name) {
+      case 'melidan':
+        return melidanImage;
+      case 'jeff':
+        return jeffImage;
+      case 'joe':
+        return joeImage;
+      default:
+        return null;
+    }
+  }
+
+  // const userName = UserDetails?.name;
+  const userName = 'joe';
+  const userImage = getUserImage(userName);
 
   return (
     <div className="flex flex-col items-center p-2 bg-transparent rounded-lg border border-[#D0D5DD]">
       <div className="flex flex-row items-center gap-3 w-full">
-        {profilePicture ?
+        {userImage ?
           <img
-            src={profilePicture}
-            // src={UserDetails?.image}
+            src={userImage}
             alt="Profile"
             className="w-[45px] h-[45px] rounded-full object-cover"
-          /> :
-          // use this placeholder for the user image
-          // {UserDetails?.image ?
-          // <img
-          //   src={profilePicture}
-          //   // src={UserDetails?.image}
-          //   alt="Profile"
-          //   className="w-[45px] h-[45px] rounded-full object-cover"
-          // />
-          // : 
+          />
+          :
           <div className="w-[45px] h-[45px] rounded-full bg-[#D85836] flex items-center justify-center">
             <span className="text-white font-bold">
               {UserDetails?.name
